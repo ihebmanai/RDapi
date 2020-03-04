@@ -17,6 +17,11 @@ passport.use(
             message: 'User not found'
           });
         }
+        if(user.password!=password){
+          return done(null,false,{
+            message:"mot de passe incorrect"
+          })
+        }
         // Return if password is wrong
     
         // If credentials are correct, return the user object
