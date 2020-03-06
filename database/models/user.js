@@ -9,8 +9,8 @@ module.exports = (sequelize, DataTypes) => {
     email: DataTypes.STRING,
     password: DataTypes.STRING,
     username:DataTypes.STRING,
-    role:{type:DataTypes.ENUM,
-    values:['client','N1']}
+    role:DataTypes.ENUM(['client','N1'])
+  
 
   }, {});
  
