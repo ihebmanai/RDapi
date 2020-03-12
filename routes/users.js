@@ -7,6 +7,9 @@ const { DataTypes } = require("sequelize");
 const User = require("../database/models/user")(sequelize, DataTypes);
 const jwt = require("jsonwebtoken");
 const jwte = require("express-jwt");
+//multer File uploader
+const { upload } = require("../config/Uploader");
+
 //dcrypt jwt token
 const auth = jwte({
   secret: process.env.TOKEN_KEY,
@@ -16,10 +19,11 @@ const auth = jwte({
 /* Register REST API  */
 router.post("/register", async function(req, res, next) {
   const user = await User.create({
+    name: req.body.name,
     username: req.body.username,
     password: req.body.password,
-    role:req.body.role,
-    email:req.body.email
+    role: req.body.role,
+    email: req.body.email
   });
   let token = jwt.sign(
     {
@@ -34,6 +38,7 @@ router.post("/register", async function(req, res, next) {
 });
 router.post("/login", async (req, res) => {
   let { username, password } = req.body;
+  console.log(req.body);
   //Find user by username
   let user = await User.findOne({ where: { username: username } });
   if (!user) {
@@ -56,12 +61,24 @@ router.post("/login", async (req, res) => {
     res.status(400).json("wrong password");
   }
 });
-router.get("/profil", auth, (req, res) => {
+router.get("/profil", upload.single("userPhoto"), auth, (req, res) => {
   User.findOne({ where: { id: req.payload.id } }).then(user => {
     if (!user) {
       res.status(401).json("not found ");
     } else {
       res.status(200).json(user.dataValues);
+    }
+  });
+});
+router.put("/update", upload.single("userPhoto"), auth, (req, res) => {
+  User.findOne({ where: { id: req.payload.id } }).then(user => {
+    if (!user) {
+      res.status(404).json("not found ");
+    } else {
+      let {username,email,password,name } = req.body;
+      user.update({username,email,password,name , image: req.file.path}).then(user => {
+        res.status(200).json(user.dataValues);
+      });
     }
   });
 });
