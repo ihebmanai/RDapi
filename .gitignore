@@ -103,5 +103,6 @@ dist
 # TernJS port file
 .tern-port
 Help-Center/
-#ingore node_modules 
+#ignore node_modules 
 .node_modules/
+.uploads/

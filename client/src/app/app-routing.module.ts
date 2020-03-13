@@ -11,15 +11,15 @@ import { NotFoundComponent } from './layout/not-found/not-found.component';
 
 const routes: Routes = [
 
-  {path:'login',component:LoginComponent},
-  {path:'register', component : RegisterComponent},
-  {path:'', component : HomeComponent , canActivate: [AuthGuardService]},
-  {path:'profile', component : ProfilComponent , canActivate: [AuthGuardService]},
+  {path: 'login', component: LoginComponent},
+  {path: 'register', component : RegisterComponent},
+  {path: 'home/:token', component : HomeComponent , canActivate: [AuthGuardService]},
+  {path: 'profile', component : ProfilComponent , canActivate: [AuthGuardService]},
 
-  {path:"**",component:NotFoundComponent},
+  {path: '**', component: NotFoundComponent},
 
-  
-  
+
+
 
 
 ];

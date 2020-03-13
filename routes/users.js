@@ -23,7 +23,8 @@ router.post("/register", async function(req, res, next) {
     username: req.body.username,
     password: req.body.password,
     role: req.body.role,
-    email: req.body.email
+    email: req.body.email,
+    image:"uploads/1584110542457favicon.jpg"
   });
   let token = jwt.sign(
     {
@@ -38,7 +39,6 @@ router.post("/register", async function(req, res, next) {
 });
 router.post("/login", async (req, res) => {
   let { username, password } = req.body;
-  console.log(req.body);
   //Find user by username
   let user = await User.findOne({ where: { username: username } });
   if (!user) {
@@ -75,8 +75,10 @@ router.put("/update", upload.single("userPhoto"), auth, (req, res) => {
     if (!user) {
       res.status(404).json("not found ");
     } else {
-      let {username,email,password,name } = req.body;
-      user.update({username,email,password,name , image: req.file.path}).then(user => {
+      let image=  ((!req.file) ? "uploads/1584110542457favicon.jpg" :req.file.path) ;
+     
+      const {username,email,password,name } = req.body;
+      user.update({username,email,password,name , image:image}).then(user => {
         res.status(200).json(user.dataValues);
       });
     }
