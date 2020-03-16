@@ -1,0 +1,86 @@
+<!-- Background -->
+<div class="account-pages"></div>
+
+<!-- Begin page -->
+<br><br>
+    <div class="container-fluid">
+            <div class="row">
+                <div class="col-12">
+  <div class="card">
+    <div class="card-body">
+      <h3 class="text-center m-0">
+        <a href="index.html" class="logo logo-admin"
+          ><img src="assets/images/agena300.png" height="30" alt="logo"
+        /></a>
+      </h3>
+      <h4 class="text-muted font-18 m-b-5 text-center">
+        Bienvenue à notre Support Agena3000
+      </h4>
+
+      <div class="user-thumb text-center m-b-30">
+        <img
+          src="assets/images/users/user-6.jpg"
+          class="rounded-circle img-thumbnail"
+          alt="thumbnail"
+        />
+        <h6>{{ user.user.firstName }} {{ user.user.lastName }}</h6>
+      </div>
+      <div class="p-3">
+        <p class="text-muted text-center">
+          Bienvenue<b> {{ user.user.firstName }} {{ user.user.lastName }}</b> ,
+          fait une description sur votre probleme !
+        </p>
+
+        <form
+          (submit)="login()"
+          class="form-horizontal m-t-30"
+          action="index.html"
+        >
+          <div class="form-group">
+            <label for="username">Objet :</label>
+            <input
+              type="text"
+              class="form-control"
+              name="objet"
+              id="objet"
+              placeholder="Titre de probleme"
+              [(ngModel)]="user.username"
+            />
+          </div>
+
+          <div class="form-group">
+            <label for="userpassword">Catégorie :</label>
+            <select class="custom-select">
+              <option selected="">Open this select menu</option>
+              <option value="1">One</option>
+              <option value="2">Two</option>
+              <option value="3">Three</option>
+            </select>
+          </div>
+          <div class="form-group">
+            <label for="userpassword">Description :</label>
+
+            <textarea
+              id="textarea"
+              class="form-control"
+              maxlength="1000"
+              rows="10"
+              placeholder="Description"
+            ></textarea>
+          </div>
+          <div class="form-group">
+            <div>
+                <button type="submit" class="btn btn-primary waves-effect waves-light">
+                    Submit
+                </button>
+               
+            </div>
+        </div>
+        </form>
+      </div>
+    </div>
+  </div>
+</div>
+        
+    </div>
+</div>

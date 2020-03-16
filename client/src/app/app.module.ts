@@ -14,6 +14,7 @@ import { FooterComponent } from './layout/footer/footer.component';
 import { HomeComponent } from './N1components/home/home.component';
 import { ProfilComponent } from './N1components/profil/profil.component';
 import { NotFoundComponent } from './layout/not-found/not-found.component';
+import { ProblemeComponent } from './Client/probleme/probleme.component';
 
 
 
@@ -24,7 +25,7 @@ import { NotFoundComponent } from './layout/not-found/not-found.component';
     RegisterComponent,
     HeaderComponent,
     FooterComponent,
-    HomeComponent,ProfilComponent, NotFoundComponent
+    HomeComponent,ProfilComponent, NotFoundComponent, ProblemeComponent
  
   ],
   imports: [

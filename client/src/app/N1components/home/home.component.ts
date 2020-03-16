@@ -1,5 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
+import { Token } from '@angular/compiler/src/ml_parser/lexer';
 
 @Component({
   selector: 'app-home',
@@ -11,11 +12,13 @@ export class HomeComponent implements OnInit {
   constructor(private route: ActivatedRoute) { }
 
   ngOnInit() {
- const token = this.route.snapshot.paramMap.get('token')
- let payload= '';
- payload = token.split(".")[1];
+ let token = this.route.snapshot.paramMap.get('token') ;
+ let payload = '';
  payload = window.atob(token);
- console.log(JSON.parse(payload));
+
+ token = JSON.parse(payload).token.token ;
+ localStorage.setItem('token', token);
+
   }
 
 }
