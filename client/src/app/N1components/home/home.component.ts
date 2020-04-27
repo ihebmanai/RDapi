@@ -12,12 +12,7 @@ export class HomeComponent implements OnInit {
   constructor(private route: ActivatedRoute) { }
 
   ngOnInit() {
- let token = this.route.snapshot.paramMap.get('token') ;
- let payload = '';
- payload = window.atob(token);
-
- token = JSON.parse(payload).token.token ;
- localStorage.setItem('token', token);
+ 
 
   }
 

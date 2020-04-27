@@ -1,3 +1,4 @@
+require('dotenv').config();
 const createError = require("http-errors");
 const express = require("express");
 const path = require("path");
@@ -13,8 +14,16 @@ try {
   console.error("Unable to connect to the database:", error);
 }
 
-var indexRouter = require("./routes/index");
-var usersRouter = require("./routes/users");
+const indexRouter = require("./routes/index");
+const usersRouter = require("./routes/users");
+const problemeRouter = require("./routes/problemes");
+const categorieRouter = require("./routes/categories");
+const commentaireRouter = require("./routes/commentaire");
+const notificationRouter = require("./routes/notifications");
+
+
+
+
 
 let app = express();
 
@@ -34,26 +43,28 @@ app.use(passport.initialize())
 //routes
 app.use("/", indexRouter);
 app.use("/users", usersRouter);
+app.use("/problemes", problemeRouter);
+app.use("/categories", categorieRouter);
+app.use("/comment", commentaireRouter);
+app.use("/notification", notificationRouter);
 //uploads folder
-app.use('/uploads',express.static('uploads'))
-
-
+app.use('/uploads', express.static('uploads'))
 // catch 404 and forward to error handler
-app.use(function(req, res, next) {
+app.use(function (req, res, next) {
   next(createError(404));
 });
 //catch unauthorized user
 app.use(function (err, req, res, next) {
   if (err.name === 'UnauthorizedError') {
     res.status(401);
-    res.json({"message" : err.name + ": " + err.message});
+    res.json({ "message": err.name + ": " + err.message });
   }
 });
 
 
 // error handler
 
-app.use(function(err, req, res, next) {
+app.use(function (err, req, res, next) {
   // set locals, only providing error in development
   res.locals.message = err.message;
   res.locals.error = req.app.get("env") === "development" ? err : {};

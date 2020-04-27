@@ -17,19 +17,21 @@ const auth = jwte({
 });
 
 /* Register REST API  */
-router.post("/register", async function(req, res, next) {
+router.post("/register", async function (req, res, next) {
   const user = await User.create({
     name: req.body.name,
     username: req.body.username,
     password: req.body.password,
-    role: req.body.role,
+    role: 'N1',
     email: req.body.email,
-    image:"uploads/1584110542457favicon.jpg"
+    image: "uploads/1584110542457favicon.jpg"
   });
   let token = jwt.sign(
     {
       id: user.dataValues.id,
-      username: user.dataValues.username
+      username: user.dataValues.username,
+      name: user.dataValues.name,
+      email: user.dataValues.email
     },
     process.env.TOKEN_KEY,
     { expiresIn: 1000 }
@@ -75,14 +77,56 @@ router.put("/update", upload.single("userPhoto"), auth, (req, res) => {
     if (!user) {
       res.status(404).json("not found ");
     } else {
-      let image=  ((!req.file) ? "uploads/1584110542457favicon.jpg" :req.file.path) ;
-     
-      const {username,email,password,name } = req.body;
-      user.update({username,email,password,name , image:image}).then(user => {
+      let image = ((!req.file) ? "uploads/1584110542457favicon.jpg" : req.file.path);
+
+      const { username, email, password, name } = req.body;
+      user.update({ username, email, password, name, image: image }).then(user => {
         res.status(200).json(user.dataValues);
       });
     }
   });
 });
+router.post('/saveclient', async (req, res) => {
+  User.findOne({ where: { name: req.body.name } }).then(async (data) => {
+    let user;
+    let token;
+    if (data) {
+      console.log(data.dataValues)
+      token = jwt.sign(
+        {
+          id: data.dataValues.id,
+          username: data.dataValues.username,
+          name: data.dataValues.name,
+          email: data.dataValues.email
+        },
+        process.env.TOKEN_KEY,
+        { expiresIn: 1000 }
+      );
+
+    }
+    else {
+      user = await User.create({
+        name: req.body.name,
+        username: req.body.username,
+        role: 'client',
+        email: req.body.email,
+        image: "uploads/1584110542457favicon.jpg"
+      });
+      token = jwt.sign(
+        {
+          id: user.dataValues.id,
+          username: user.dataValues.username,
+          name: user.dataValues.name,
+          email: user.dataValues.email
+        },
+        process.env.TOKEN_KEY,
+        { expiresIn: 1000 }
+      );
+
+    }
+    res.json(token);
+  });
+
+})
 
 module.exports = router;

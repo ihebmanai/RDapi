@@ -7,6 +7,10 @@
 var app = require('../app');
 var debug = require('debug')('rdapi:server');
 var http = require('http');
+const soketIo = require('socket.io');
+let broadcaster;
+
+
 
 /**
  * Get port from environment and store in Express.
@@ -20,6 +24,55 @@ app.set('port', port);
  */
 
 var server = http.createServer(app);
+
+const io = soketIo(server);
+/* Socket IO demande de controle  */
+io.on('connection', (socket) => {
+  console.log('connected to Socket Io')
+  // makeing call 
+  socket.on('call', (data) => {
+    console.log('recived call from ' + data.offre);
+    socket.broadcast.emit('calling', { offer: data.offre, callId: data.callId })
+  })
+  // answering the call 
+  socket.on("make-answer", data => {
+    console.log('ok')
+    socket.broadcast.emit("answer-made", {
+      callId: data.callId,
+      answer: data.answer
+    });
+  });
+
+  socket.on('cancel', (callId) => {
+    socket.broadcast.emit('cancelClient', callId)
+  })
+  socket.on("broadcaster", () => {
+    console.log('broadcaster')
+    broadcaster = socket.id;
+    socket.broadcast.emit("broadcaster");
+  });
+  socket.on("watcher", () => {
+    socket.broadcast.emit("watcher", socket.id);
+  });
+  socket.on("offer", (id, message) => {
+    console.log('offer ' + message)
+    socket.to(id).emit("offer", { id: socket.id, message: message });
+  });
+  socket.on("answer", (id, message) => {
+    console.log('answer ' + message)
+    socket.to(id).emit("answer", { id: socket.id, message: message });
+  });
+  socket.on("candidate", (id, message) => {
+    console.log('candidate' + message)
+    socket.to(id).emit("candidate", { id: socket.id, message: message });
+  });
+  socket.on("disconnect", () => {
+    socket.to(broadcaster).emit("disconnectPeer", socket.id);
+  });
+
+
+})
+
 
 /**
  * Listen on provided port, on all network interfaces.

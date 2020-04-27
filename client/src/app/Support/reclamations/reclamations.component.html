@@ -1,0 +1,130 @@
+<app-header-support-n></app-header-support-n>
+<div class="page-content-wrapper">
+    <div class="container-fluid">
+
+        <div class="card">
+            <div class="card-body">
+                <h4 class="mt-0 header-title mb-4">Liste des Reclamations : {{listPobleme.length}} </h4>
+                <fieldset>
+                    <div style="margin-left: 5%;" class="form-check-inline">
+                        <span class="ion-search"></span> |
+                        <label class="form-check-label">Catégorie: </label>
+                        <select (change)="searchCat()" style="margin-left: 5%;" name="categorie" [(ngModel)]="categorie"
+                            class="custom-select" #categorieVal="ngModel" required>
+                            <option value="0" selected>Tous</option>
+                            <option *ngFor="let cat of listCategorie" value="{{cat.id}}">{{cat.name}}</option>
+                        </select>
+                    </div>
+                    <div style="margin-left: 5%;margin-bottom:0.5cm;">
+
+                        <div class="form-check form-check-inline">
+                            <span class="ion-gear-b">|</span>
+                            <label class="form-check-label" for="inlineCheckbox1">Option : </label>
+                        </div>
+                        <div class="form-check form-check-inline">
+                            <input class="form-check-input" type="radio" name="searchChoice" value="all"
+                                [(ngModel)]="problemeState" (change)="search()" [checked]>
+                            <label class="form-check-label" for="inlineCheckbox1">Tous</label>
+                        </div>
+                        <div class="form-check form-check-inline">
+                            <input class="form-check-input" type="radio" name="searchChoice" value="envoyé"
+                                [(ngModel)]="problemeState" (change)="search()">
+                            <label class="form-check-label" for="inlineCheckbox1">Pas affecté</label>
+                        </div>
+                        <div class="form-check form-check-inline">
+                            <input class="form-check-input" type="radio" name="searchChoice" value="en cours"
+                                [(ngModel)]="problemeState" (change)="search()">
+                            <label class="form-check-label" for="inlineCheckbox1">En Cours </label>
+                        </div>
+
+                        <div class="form-check form-check-inline">
+                            <input class="form-check-input" type="radio" name="searchChoice" value="résolu"
+                                [(ngModel)]="problemeState" (change)="search()">
+                            <label class="form-check-label" for="inlineCheckbox3">Résolu</label>
+                        </div>
+                        <div class="form-check form-check-inline">
+                            <input class="form-check-input" type="radio" name="searchChoice" value="fermé"
+                                [(ngModel)]="problemeState" (change)="search()">
+                            <label class="form-check-label" for="inlineCheckbox3">Fermé</label>
+                        </div>
+
+                    </div>
+                </fieldset>
+                <div class="table-responsive order-table">
+                    <table class="table table-hover mb-0">
+                        <thead>
+                            <tr>
+                                <th scope="col">(#) Id</th>
+                                <th scope="col">Client</th>
+                                <th scope="col">Objet</th>
+                                <th scope="col">Catégorie</th>
+                                <th scope="col">Date/Time</th>
+                                <th scope="col">Support</th>
+                                <th scope="col" colspan="2">Status</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+
+                            <tr *ngIf="listPobleme.length==0" style="align-items: center;">
+                                Aucune résultat trouvé 🍔
+                            </tr>
+                            <tr *ngFor="let prob of listPobleme">
+                                <th scope="row">#14562</th>
+                                <td>
+                                    <div>
+                                        <img src="assets/images/users/user-4.jpg" alt=""
+                                            class="thumb-md rounded-circle mr-2"> {{prob.userId}}
+                                    </div>
+                                </td>
+                                <td>{{prob.objet}}
+                                </td>
+                                <td>{{prob.categorieId}}</td>
+                                <td>{{prob.createdAt | date :'mediumDate'}}
+                                    <p class="font-13 text-muted mb-0">{{prob.createdAt | date :'shortTime'}}</p>
+
+                                </td>
+                                <td>
+                                    <div>
+                                        <div *ngIf="!prob.supportId">
+                                            <img src="assets/images/users/user-4.jpg" alt=""
+                                                class="thumb-md rounded-circle mr-2"> Pas affecté
+                                        </div>
+                                        <div *ngIf="prob.supportId">
+                                            <img src="assets/images/users/user-4.jpg" alt=""
+                                                class="thumb-md rounded-circle mr-2"> {{prob.supportId}}
+                                        </div>
+                                    </div>
+                                </td>
+                                <td>
+                                    <div>
+                                        <span *ngIf="prob.state == 'en cours'" class="badge badge-warning badge-pill"><i
+                                                class="mdi mdi-checkbox-blank-circle text-warning"></i>
+                                            {{prob.state}}</span>
+                                        <span *ngIf="prob.state == 'envoyé'" class="badge badge-danger badge-pill"><i
+                                                class="mdi mdi-checkbox-blank-circle text-success"></i>
+                                            Réçu</span>
+                                        <span *ngIf="prob.state == 'résolu'" class="badge badge-success badge-pill"><i
+                                                class="mdi mdi-checkbox-blank-circle text-success"></i>
+                                            {{prob.state}}</span>
+                                        <span *ngIf="prob.state == 'fermé'" class="badge badge-primary badge-pill"><i
+                                                class="mdi mdi-checkbox-blank-circle text-primary"></i>
+                                            {{prob.state}}</span>
+                                    </div>
+                                </td>
+                                <td>
+                                    <div>
+                                        <a routerLink="/admin/detail/{{prob.id}}"
+                                            class="btn btn-primary btn-sm">Detail</a>
+                                    </div>
+                                </td>
+                            </tr>
+
+                        </tbody>
+                    </table>
+
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<app-footer></app-footer>

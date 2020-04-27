@@ -7,7 +7,7 @@ passport.use(
     {},
 
     (username, password, done) => {
-      User.findAll({ where: {username:username} }, function(err, user) {
+      User.findAll({ where: { username: username } }, function (err, user) {
         if (err) {
           return done(err);
         }
@@ -17,13 +17,13 @@ passport.use(
             message: 'User not found'
           });
         }
-        if(user.password!=password){
-          return done(null,false,{
-            message:"mot de passe incorrect"
+        if (user.password != password) {
+          return done(null, false, {
+            message: "mot de passe incorrect"
           })
         }
         // Return if password is wrong
-    
+
         // If credentials are correct, return the user object
         return done(null, user);
       });

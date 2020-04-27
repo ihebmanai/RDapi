@@ -1,84 +1,125 @@
 <div>
-    <app-header></app-header>
-    <div class="page-content-wrapper">
-        <div class="container-fluid">
-            <div class="row">
-                <div class="col-12">
-                    <div class="card">
-                        <div class="card-body">
-                            <!-- Demo purpose only -->
-                            <div style="min-height: 250px;">
-                            
-                                    <div class="card">
-                                        <div class="card-body">
-                        
-                                            <h3 *ngIf="!imgURL" class="text-center m-0">
-                                                <img  width="200px" height="200px"  _ngcontent-pwj-c2="" alt="user" class="rounded-circle" src="http://localhost:3000/{{user.image}}">
-                                               
-                                            </h3>
-                                            <h3 *ngIf="isphotoSelected" class="text-center m-0">
-                                                <img width="200px" height="200px"  _ngcontent-pwj-c2="" alt="user" class="rounded-circle" [src]="imgURL">
-                                               
-                                            </h3>
-                                         
+  <app-header-support-n></app-header-support-n>
+  <div class="page-content-wrapper">
+    <div class="container-fluid">
+      <div class="row">
+        <div class="col-12">
+          <div class="card">
+            <div class="card-body">
+              <!-- Demo purpose only -->
+              <div style="min-height: 250px;">
+                <div class="card">
+                  <div class="card-body">
+                    <h3 *ngIf="!imgURL" class="text-center m-0">
+                      <img width="200px" height="200px" _ngcontent-pwj-c2="" alt="user" class="rounded-circle"
+                        src="http://localhost:3000/{{ user.image }}" />
+                    </h3>
+                    <h3 *ngIf="isphotoSelected" class="text-center m-0">
+                      <img width="200px" height="200px" _ngcontent-pwj-c2="" alt="user" class="rounded-circle"
+                        [src]="imgURL" />
+                    </h3>
 
-                                            <div class="p-3">
-                                                <h4 class="text-muted font-18 m-b-5 text-center">{{user.name}} </h4>
-                                                <p class="text-muted text-center"> Support N1 </p>
-                                                <div class="text-muted font-18 m-b-5 text-center" *ngIf="modified" class="alert alert-success alert-dismissible fade show" role="alert">
-                                                    <button type="button" class="close" data-dismiss="alert" aria-label="Close">
-                                                        <span aria-hidden="true">×</span>
-                                                    </button>
-                                                    <strong>Votre profile est modifié</strong> 
-                                                </div>
-                        
-                                                <form (submit)="update()" class="form-horizontal m-t-30" action="index.html" >
-                                                    <div class="form-group">
-                                                        <label for="image">Photo</label>
-                                                        <input #file type="file" accept='image/*' (change)="preview(file.files)" />
-                                                    </div>
-                                                    <div class="form-group">
-                                                        <label for="useremail">Nom et Prenom </label>
-                                                        <input type="text" name="name" class="form-control" id="useremail" placeholder="Enter email" [(ngModel)]="user.name" required  #name="ngModel">
-                                                    </div>
-                                                   
-                                                    <div class="form-group">
-                                                        <label for="username">Email</label>
-                                                        <input type="email" name="email" class="form-control" id="email" placeholder="Enter username" [(ngModel)]="user.email" required> 
-                                                    </div>
-                        
-                                                    <div class="form-group">
-                                                        <label for="username">Username</label>
-                                                        <input type="text" name="username" class="form-control" id="username" placeholder="Enter username" [(ngModel)]="user.username" required>
-                                                    </div>
-                        
-                                                    <div class="form-group">
-                                                        <label for="userpassword">Mot de passe </label>
-                                                        <input type="password" name="password" class="form-control" id="userpassword" placeholder="Enter password" [(ngModel)]="user.password" required> 
-                                                    </div>
-                        
-                                                    <div class="form-group row m-t-20">
-                                                        <div class="col-12 text-center">
-                                                            <button class="btn btn-primary w-md waves-effect waves-light" type="submit">Modifier</button>
-                                                        </div>
-                                                    </div>
-                        
-                                                    <div class="form-group m-t-10 mb-0 row">
-                                                        <div class="col-12 m-t-20">
-                                                        </div>
-                                                    </div>
-                                                </form>
-                                            </div>
-                        
-                                        </div>
-                                    </div>
-                            </div>
+                    <div class="p-3">
+                      <h4 class="text-muted font-18 m-b-5 text-center">
+                        {{ user.name }}
+                      </h4>
+                      <p class="text-muted text-center">Support N1</p>
+                      <div class="text-muted font-18 m-b-5 text-center" *ngIf="modified"
+                        class="alert alert-success alert-dismissible fade show" role="alert">
+                        <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                          <span aria-hidden="true">×</span>
+                        </button>
+                        <strong>Votre profile est modifié</strong>
+                      </div>
+
+                      <form (submit)="update()" class="form-horizontal m-t-30" action="index.html">
+                        <div class="form-group">
+                          <label for="image">Photo</label>
+                          <div class="custom-file">
+                            <label for="images">Modifier votre image </label>
+                            <input #file type="file" accept="image/*" class="custom-file-input" id="validatedCustomFile"
+                              multiple="multiple" (change)="preview(file.files)" required>
+                            <label class="custom-file-label" for="validatedCustomFile">Modifier votre image...</label>
+                          </div>
+
                         </div>
-                    </div>
-                </div>
+                        <div class="form-group">
+                          <label for="useremail">Nom et Prenom </label>
+                          <ul *ngIf="name.touched && name.errors?.required" class="parsley-errors-list filled"
+                            id="parsley-id-13">
+                            <li class="parsley-equalto">
+                              Champs obligatoire .
+                            </li>
+                          </ul>
+                          <input type="text" name="name" class="form-control" id="useremail" placeholder="Enter email"
+                            [(ngModel)]="user.name" required #name="ngModel" />
+                        </div>
 
+                        <div class="form-group">
+                          <label for="username">Email</label>
+                          <ul *ngIf="email.touched && email.errors?.required" class="parsley-errors-list filled"
+                            id="parsley-id-13">
+                            <li class="parsley-equalto">
+                              Champs obligatoire .
+                            </li>
+                          </ul>
+                          <input type="email" name="email" class="form-control" id="email" placeholder="Enter username"
+                            [(ngModel)]="user.email" required #email="ngModel" />
+                        </div>
+
+                        <div class="form-group">
+                          <label for="username">Username</label>
+                          <ul *ngIf="
+                              username.touched && username.errors?.required
+                            " class="parsley-errors-list filled" id="parsley-id-13">
+                            <li class="parsley-equalto">
+                              Champs obligatoire .
+                            </li>
+                          </ul>
+                          <input type="text" name="username" class="form-control" id="username"
+                            placeholder="Enter username" [(ngModel)]="user.username" required #username="ngModel" />
+                        </div>
+
+                        <div class="form-group">
+                          <label for="userpassword">Mot de passe </label>
+                          <ul *ngIf="
+                              password.touched && password.errors?.required
+                            " class="parsley-errors-list filled" id="parsley-id-13">
+                            <li class="parsley-equalto">
+                              Champs obligatoire .
+                            </li>
+                          </ul>
+                          <input type="password" name="password" class="form-control" id="userpassword"
+                            placeholder="Enter password" [(ngModel)]="user.password" required #password="ngModel" />
+                        </div>
+
+                        <div class="form-group row m-t-20">
+                          <div class="col-12 text-center">
+                            <button class="btn btn-primary w-md waves-effect waves-light" [disabled]="
+                                name.errors ||
+                                email.errors ||
+                                password.errors ||
+                                username.errors
+                              " type="submit">
+                              Modifier
+                            </button>
+                          </div>
+                        </div>
+
+                        <div class="form-group m-t-10 mb-0 row">
+                          <div class="col-12 m-t-20"></div>
+                        </div>
+                      </form>
+                    </div>
+                  </div>
+                </div>
+              </div>
             </div>
-       
-  
-    <app-footer></app-footer>
+          </div>
+        </div>
+      </div>
+
+      <app-footer></app-footer>
+    </div>
+  </div>
 </div>

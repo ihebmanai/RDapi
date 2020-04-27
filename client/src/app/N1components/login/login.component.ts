@@ -1,5 +1,4 @@
 import { Component, OnInit } from '@angular/core';
-import { user } from 'src/app/models/User';
 import { UserService } from 'src/app/services/user.service';
 import { Router } from '@angular/router';
 
@@ -15,16 +14,16 @@ export class LoginComponent implements OnInit {
   };
   err = false;
 
-  constructor(private userService: UserService, private router: Router) {}
+  constructor(private userService: UserService, private router: Router) { }
 
-  ngOnInit() {}
+  ngOnInit() { }
   login() {
     this.userService.login(this.user).subscribe(
-      (data: string) => {
-        localStorage.setItem('token', data);
-        this.router.navigateByUrl('/home');
+      async (data: string) => {
+        await localStorage.setItem('token', data);
+        await this.router.navigateByUrl('/home');
       },
-      err => {
+      (err) => {
         this.err = true;
       }
     );

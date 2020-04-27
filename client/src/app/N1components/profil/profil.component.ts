@@ -12,14 +12,14 @@ export class ProfilComponent implements OnInit {
   user: user = {};
   modified;
   public imagePath;
-  imgURL:any;
+  imgURL: any;
   public message: string;
   isphotoSelected = false;
-  image:any ; 
- 
-  
+  image: any;
 
-  constructor(private userService: UserService) {}
+
+
+  constructor(private userService: UserService) { }
 
   ngOnInit() {
     this.userService.getProfil().subscribe(data => {
@@ -29,16 +29,11 @@ export class ProfilComponent implements OnInit {
   }
   update() {
     let form = new FormData();
-    form.append('userPhoto',this.image);
-    form.append('name',this.user.name);
-    form.append('username',this.user.username);
-    form.append('password',this.user.password);
-    form.append('email',this.user.email);
-
-
-
-
-
+    form.append('userPhoto', this.image);
+    form.append('name', this.user.name);
+    form.append('username', this.user.username);
+    form.append('password', this.user.password);
+    form.append('email', this.user.email);
     this.userService.update(form).subscribe(data => {
       this.user = data;
       this.modified = true;
@@ -47,20 +42,20 @@ export class ProfilComponent implements OnInit {
   async preview(files) {
     if (files.length === 0)
       return;
-    this.image=files[0];
+    this.image = files[0];
     console.log(this.image)
     let mimeType = files[0].type;
     if (mimeType.match(/image\/*/) == null) {
       this.message = "Only images are supported.";
       return;
     }
- 
+
     const reader = new FileReader();
     this.imagePath = files;
-  await  reader.readAsDataURL(files[0]); 
-    reader.onload = async (_event) => { 
-      this.imgURL =  await reader.result; 
-      this.isphotoSelected=true;
+    await reader.readAsDataURL(files[0]);
+    reader.onload = async (_event) => {
+      this.imgURL = await reader.result;
+      this.isphotoSelected = true;
     }
   }
 }

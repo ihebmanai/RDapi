@@ -1,70 +1,95 @@
+<!-- Background -->
+<div class="account-pages"></div>
 
-        <!-- Background -->
-        <div class="account-pages"></div>
+<!-- Begin page -->
+<div class="wrapper-page">
+  <div class="card">
+    <div class="card-body">
+      <h3 class="text-center m-0">
+        <a href="index.html" class="logo logo-admin"><img src="assets/images/agena300.png" height="30" alt="logo" /></a>
+      </h3>
 
-        <!-- Begin page -->
-        <div class="wrapper-page">
-            <div class="card">
-                <div class="card-body">
+      <div class="p-3">
+        <h4 class="text-muted font-18 m-b-5 text-center">Inscription</h4>
+        <p class="text-muted text-center">Support N1</p>
 
-                    <h3 class="text-center m-0">
-                        <a href="index.html" class="logo logo-admin"><img src="assets/images/agena300.png" height="30" alt="logo"></a>
-                    </h3>
+        <form (submit)="register()" class="form-horizontal m-t-30" action="index.html" novalidate>
+          <div class="form-group">
+            <label for="useremail">Nom et Prenom </label>
+            <ul *ngIf="name.touched && name.errors?.required" class="parsley-errors-list filled" id="parsley-id-13">
+              <li class="parsley-equalto">Champs obligatoire .</li>
+            </ul>
 
-                    <div class="p-3">
-                        <h4 class="text-muted font-18 m-b-5 text-center">Inscription </h4>
-                        <p class="text-muted text-center"> Support N1 </p>
+            <input type="text" name="name" class="form-control" id="useremail" placeholder="Enter email"
+              [(ngModel)]="user.name" required #name="ngModel" />
+          </div>
 
-                        <form (submit)="register()" class="form-horizontal m-t-30" action="index.html"  novalidate>
-                          
-                            <div class="form-group">
-                                <ul *ngIf="!name.touched || name.errors.required"  class="parsley-errors-list filled" id="parsley-id-13"><li class="parsley-equalto">This value should be the same.</li></ul>
-                                <label for="useremail">Nom et Prenom </label>
-                                <input type="text" name="name" class="form-control" id="useremail" placeholder="Enter email" [(ngModel)]="user.name" required  #name="ngModel">
-                            </div>
-                           
-                            <div class="form-group">
-                                <label for="username">Email</label>
-                                <input type="email" name="email" class="form-control" id="email" placeholder="Enter username" [(ngModel)]="user.email" required> 
-                            </div>
+          <div class="form-group">
+            <label for="username">Email</label>
+            <ul *ngIf="email.touched && email.errors?.required" class="parsley-errors-list filled" id="parsley-id-13">
+              <li class="parsley-equalto">Champs obligatoire .</li>
+            </ul>
+            <input type="email" name="email" class="form-control" id="email" placeholder="Enter username"
+              [(ngModel)]="user.email" required #email="ngModel" />
+          </div>
 
-                            <div class="form-group">
-                                <label for="username">Username</label>
-                                <input type="text" name="username" class="form-control" id="username" placeholder="Enter username" [(ngModel)]="user.username" required>
-                            </div>
-                            
-                           
-                            <div class="form-group " >
-                                <label>Mot de passe</label>
-                                <div>
-                                    <input name="pass1" type="password" id="pass2" class="form-control" required
-                                            placeholder="Password" [(ngModel)]="user.password"/>
-                                </div>
-                                <div class="m-t-10">
-                                    <input type="password" class="form-control" required 
-                                            data-parsley-equalto="#pass2"
-                                            placeholder="Confirmer le mot de passe"  />
-                                </div>
-                            </div>
+          <div class="form-group">
+            <label for="username">Username</label>
+            <ul *ngIf="username.touched && username.errors?.required" class="parsley-errors-list filled"
+              id="parsley-id-13">
+              <li class="parsley-equalto">Champs obligatoire .</li>
+            </ul>
+            <input type="text" name="username" class="form-control" id="username" placeholder="Enter username"
+              [(ngModel)]="user.username" #username="ngModel" required />
+          </div>
 
-                            <div class="form-group row m-t-20">
-                                <div class="col-12 text-center">
-                                    <button class="btn btn-primary w-md waves-effect waves-light" type="submit" [disabled]="name.errors">Register</button>
-                                </div>
-                            </div>
-
-                            <div class="form-group m-t-10 mb-0 row">
-                                <div class="col-12 m-t-20">
-                                </div>
-                            </div>
-                        </form>
-                    </div>
-
-                </div>
+          <div class="form-group ">
+            <label>Mot de passe</label>
+            <div>
+              <ul *ngIf="password.touched && password.errors?.required" class="parsley-errors-list filled"
+                id="parsley-id-13">
+                <li class="parsley-equalto">Champs obligatoire .</li>
+              </ul>
+              <input name="pass1" type="password" class="form-control" required placeholder="Password"
+                [(ngModel)]="user.password" #password="ngModel" />
             </div>
+            <div class="m-t-10">
+              <label>Confimer le mot de passe</label>
 
-            <div class="m-t-40 text-center">
-                <p class="text-muted">Vous avez un compte ? <a routerLink="/login" class="text-white"> Login </a> </p>
-                <p class="text-muted">© 2020 Agena3000. Crafted with <i class="mdi mdi-heart text-primary"></i> by Iheb Manai</p>
+              <ul *ngIf=" (user.password  != user.password2) && password2.touched " class="parsley-errors-list filled"
+                id="parsley-id-13">
+                <li class="parsley-equalto">Les deux mots de passes ne sont pas égaux ! .</li>
+              </ul>
+              <input type="password" class="form-control" required name="password2"
+                placeholder="Confirmer le mot de passe" [(ngModel)]="user.password2" #password2="ngModel" required />
             </div>
-        </div>
+          </div>
+
+          <div class="form-group row m-t-20">
+            <div class="col-12 text-center">
+              <button class="btn btn-primary w-md waves-effect waves-light" type="submit"
+                [disabled]="name.errors || password.errors || email.errors || username.errors ||  (user.password  != user.password2)">
+                Register
+              </button>
+            </div>
+          </div>
+
+          <div class="form-group m-t-10 mb-0 row">
+            <div class="col-12 m-t-20"></div>
+          </div>
+        </form>
+      </div>
+    </div>
+  </div>
+
+  <div class="m-t-40 text-center">
+    <p class="text-muted">
+      Vous avez un compte ?
+      <a routerLink="/login" class="text-white"> Login </a>
+    </p>
+    <p class="text-muted">
+      © 2020 Agena3000. Crafted with
+      <i class="mdi mdi-heart text-primary"></i> by Iheb Manai
+    </p>
+  </div>
+</div>

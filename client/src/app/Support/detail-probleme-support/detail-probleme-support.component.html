@@ -1,0 +1,138 @@
+<app-header-support-n></app-header-support-n>
+<div class="page-content-wrapper">
+    <div class="container-fluid">
+        <div class="row">
+            <div class="col-12">
+
+                <div class="card">
+                    <div class="card-header">
+                        <div>
+                            <button *ngIf="probleme.state == 'en cours'"
+                                class="btn btn-warning btn-pill waves-effect waves-light "><span class="ti-settings
+                                            "> | </span>
+                                {{probleme.state | uppercase}}
+                            </button>
+
+                            <button *ngIf="probleme.state == 'envoyé'"
+                                class="btn btn-danger waves-effect waves-light "><span class="ion-navigate
+
+                            "> | </span> Réçu</button>
+
+                            <button *ngIf="probleme.state == 'résolu'"
+                                class="btn btn-success waves-effect waves-light ">
+                                <span class="mdi mdi-account-multiple-check
+                            "></span> | {{probleme.state| uppercase }}
+                            </button>
+
+                            <button *ngIf="probleme.state == 'fermé'" class="btn btn-primary waves-effect waves-light ">
+                                <span class="mdi mdi-account-multiple-check
+                            "></span> | {{probleme.state| uppercase }}
+                            </button>
+
+                            <p *ngIf=" probleme.state=='en cours' && probleme.supportId==user.id"
+                                style="display: inline-block;margin-left: 25%;">
+
+                                <button (click)="controleRequest()"
+                                    class="btn btn-danger waves-effect waves-light "><span class="fas fa-desktop"> |
+                                    </span>
+                                    Demande de Controle à distance
+                                </button></p>
+
+                            <p *ngIf=" probleme.state=='en cours' && probleme.supportId==user.id "
+                                style="display: inline-block;margin-left: 25%;">
+                                <button (click)="fermerProb()" class="btn btn-primary waves-effect waves-light "><span
+                                        class="fas fa-lock"> | </span>Fermer la reclamation</button></p>
+
+                            <button *ngIf="!probleme.supportId" style="display: inline-block;margin-left: 60%;"
+                                (click)="affectProbToSupport()" class="btn btn-danger waves-effect waves-light "><span
+                                    class="mdi mdi-account-multiple-check
+                                                "> | </span>Prendre en Charge</button>
+                            <p *ngIf="probleme.supportId && probleme.supportId!=user.id" style="margin-left: 0%;">
+                                <span class="mdi mdi-account-multiple-check
+                                                                    "> | </span>{{probleme.supportId}}</p>
+
+
+
+                            <p *ngIf="probleme.supportId==user.id" style="display: inline-block;">
+                                <span class="mdi mdi-account-multiple-check
+                                                              "> | </span>Moi</p>
+                        </div>
+
+
+
+
+                    </div>
+
+                    <div class="card-body">
+                        <div *ngIf="probleme.state=='fermé'" style="align-items: center;" class="alert alert-primary"
+                            role="alert">
+                            Vous avez marquée cette probléme comme Fermée le :<strong>
+                                {{probleme.updatedAt | date:'mediumDate'}}</strong>
+                        </div>
+                        <div *ngIf="affected" style="align-items: center;" class="alert alert-warning" role="alert">
+                            Cette probleme est déja affectée à<strong> {{probleme.supportId}}</strong>
+                        </div>
+                        <div class="media m-b-30">
+                            <img class="d-flex mr-3 rounded-circle thumb-md" src="assets/images/users/user-1.jpg"
+                                alt="Generic placeholder image">
+                            <div class="media-body">
+                                <h4 class="font-14 m-0">{{probleme.userId}}</h4>
+                                <small class="text-muted">Client AGENA3000 </small>
+                            </div>
+                        </div>
+
+                        <h4 class="mt-0 font-16">{{probleme.categorieId}} : {{probleme.objet}}</h4>
+                        <hr>
+
+                        <p>{{probleme.description}}</p>
+                        <hr />
+
+                        <div class="row">
+                            <div *ngFor="let img of probleme.images" class="col-xl-2 col-6">
+                                <div class="card m-b-20">
+                                    <img class="card-img-top img-fluid" src="http://localhost:3000/{{img}}"
+                                        alt="Card image cap">
+                                    <div class="p-t-10 p-b-10 text-center">
+                                        <a href="http://localhost:3000/{{img}}" target="_blank"
+                                            class="text-muted font-500">Voir</a>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="card my-4">
+                            <h5 class="card-header">Reponse : </h5>
+                            <div class="card-body">
+                                <form (submit)="addComment()" class="form-horizental">
+                                    <div class="form-group">
+                                        <textarea name="contenu" class="form-control" rows="3" required
+                                            [(ngModel)]="comment.contenu" #contenu="ngModel"></textarea>
+                                    </div>
+                                    <button [disabled]="contenu.errors" type="submit"
+                                        class="btn btn-secondary waves-effect m-t-30"><i class="mdi mdi-reply"></i>
+                                        Répondre</button>
+                                </form>
+                            </div>
+                        </div>
+                        <div *ngFor="let comm of comments " class="media mb-4">
+                            <img class="d-flex mr-3 rounded-circle thumb-md" src="assets/images/users/user-1.jpg"
+                                alt="Generic placeholder image">
+                            <div class="media-body">
+                                <h4 class="font-14 m-0">{{comm.userId}}</h4>
+
+                                <small class="text-muted">{{comm.createdAt |date :'longDate'}}
+                                    {{comm.createdAt |date :'shortTime'}} </small>
+                                <br />
+                                {{comm.contenu}}
+                            </div>
+
+
+
+
+
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <app-footer></app-footer>
