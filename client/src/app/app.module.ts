@@ -22,11 +22,13 @@ import { HeaderSupportNComponent } from './layout/header-support-n/header-suppor
 import { CategorieComponent } from './Support/categorie/categorie.component';
 import { DetailProblemeComponent, DialogRecivedCall } from './Client/detail-probleme/detail-probleme.component';
 import { ListProblemeComponent } from './Support/list-probleme/list-probleme.component';
-import { DetailProblemeSupportComponent, DialogOverviewExampleDialog } from './Support/detail-probleme-support/detail-probleme-support.component';
+import { DetailProblemeSupportComponent, DialogOverviewExampleDialog, DialogCancel } from './Support/detail-probleme-support/detail-probleme-support.component';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { MatDialog, MatDialogRef, MatDialogModule } from '@angular/material/dialog';
 import { Overlay } from '@angular/cdk/overlay';
 import { DemoMaterialModule } from './material-module';
+import { ChatComponent } from './Support/chat/chat.component';
+import { ChatClientComponent } from './Client/chat/chat.component';
 
 
 
@@ -38,7 +40,7 @@ import { DemoMaterialModule } from './material-module';
     HeaderComponent,
     FooterComponent,
     HomeComponent, ProfilComponent, NotFoundComponent, ProblemeComponent, MyProblemesComponent, ReclamerProblemeComponent, ReclamationsComponent, HeaderSupportNComponent, CategorieComponent, DetailProblemeComponent, ListProblemeComponent, DetailProblemeSupportComponent
-    , DialogOverviewExampleDialog, DialogRecivedCall
+    , DialogOverviewExampleDialog, DialogRecivedCall, DialogCancel, ChatComponent, ChatClientComponent
   ],
   imports: [
     BrowserModule,
@@ -59,7 +61,8 @@ import { DemoMaterialModule } from './material-module';
   ],
   entryComponents: [
     DialogOverviewExampleDialog,
-    DialogRecivedCall
+    DialogRecivedCall,
+    DialogCancel
   ],
   bootstrap: [AppComponent]
 })

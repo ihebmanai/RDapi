@@ -21,6 +21,9 @@ export class HeaderSupportNComponent implements OnInit {
       this.notifications = data;
       console.log(data)
     })
+    this.userServrice.getProfil().subscribe(data => {
+      this.image = data.image;
+    });
   }
   /**
    * seenNotif

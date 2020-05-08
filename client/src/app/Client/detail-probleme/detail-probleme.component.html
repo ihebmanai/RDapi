@@ -23,17 +23,18 @@
                         </button>
                         <button (click)="resolu()" *ngIf="probleme.supportId && probleme.state != 'résolu' "
                             style="margin-left: 70%;" class="btn btn-success waves-effect waves-light "><span class="mdi mdi-account-multiple-check
-                                    "> | </span>Marquez comme Résolu ? </button>
+                                    "> | </span>Marquer comme Résolu ? </button>
 
                         <a *ngIf="probleme.supportId" style="display: inline-block;margin-left: 80%;">
                             <span class="mdi mdi-account-multiple-check
-                                                            "> | </span>Affecté à : {{probleme.supportId}}</a>
+                                                            "> | </span>Affecté à :
+                            {{getUserById(probleme.supportId).name}}</a>
 
 
 
                         <a *ngIf="!probleme.supportId" style="display: inline-block;margin-left: 75%;">
                             <span class="mdi mdi-account-multiple-check
-                                      "> | </span>Pas encors affecté</a>
+                                      "> | </span>Non Affecté</a>
 
                     </div>
 
@@ -51,20 +52,21 @@
                         <div *ngIf="probleme.state=='en cours'" style="align-items: center;" class="alert alert-danger"
                             role="alert">
                             Notre equipe est entrain de résoudre votre probéme ,votre agent Support N1 est : <strong>
-                                {{probleme.supportId}}
+                                {{getUserById(probleme.supportId).name}}
                             </strong>
                         </div>
                         <hr>
                         <div class="media m-b-30">
-                            <img class="d-flex mr-3 rounded-circle thumb-md" src="assets/images/users/user-1.jpg"
+                            <img class="d-flex mr-3 rounded-circle thumb-md"
+                                src="http://localhost:3000/{{ getUserById(probleme.userId).image }}"
                                 alt="Generic placeholder image">
                             <div class="media-body">
-                                <h4 class="font-14 m-0">{{probleme.userId}}</h4>
+                                <h4 class="font-14 m-0">{{getUserById(probleme.userId).name}}</h4>
                                 <small class="text-muted">Client AGENA3000 </small>
                             </div>
                         </div>
 
-                        <h4 class="mt-0 font-16">{{probleme.categorieId}} : {{probleme.objet}}</h4>
+                        <h4 class="mt-0 font-16"> {{probleme.objet}}</h4>
                         <hr>
 
                         <p>{{probleme.description}}</p>
@@ -84,7 +86,7 @@
 
                         </div>
                         <div class="card my-4">
-                            <h5 class="card-header">Reponse : </h5>
+                            <h5 class="card-header">Réponses : </h5>
                             <div class="card-body">
                                 <form (submit)="addComment()" class="form-horizental">
                                     <div class="form-group">
@@ -98,10 +100,11 @@
                             </div>
                         </div>
                         <div *ngFor="let comm of comments " class="media mb-4">
-                            <img class="d-flex mr-3 rounded-circle thumb-md" src="assets/images/users/user-1.jpg"
+                            <img class="d-flex mr-3 rounded-circle thumb-md"
+                                src="http://localhost:3000/{{ getUserById(comm.userId).image }}"
                                 alt="Generic placeholder image">
                             <div class="media-body">
-                                <h4 class="font-14 m-0">{{comm.userId}}</h4>
+                                <h4 class="font-14 m-0">{{getUserById(comm.userId).name}}</h4>
 
                                 <small class="text-muted">{{comm.createdAt |date :'longDate'}}
                                     {{comm.createdAt |date :'shortTime'}} </small>

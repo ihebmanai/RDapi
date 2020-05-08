@@ -6,23 +6,29 @@
         <div class="card directory-card m-b-20">
           <div class="card-body directory-card-bg">
             <div class="clearfix">
-              <div class="directory-img float-left mr-4">
+              <div *ngIf="prob.supportId" class="directory-img float-left mr-4">
                 <img class="rounded-circle thumb-lg img-thumbnail"
-                  src="http://localhost:3000/uploads/1584110542457favicon.jpg" alt="Generic placeholder image" />
+                  src="http://localhost:3000/{{getUserById(prob.supportId).image}}" alt="Generic placeholder image" />
+                <p><b>{{getUserById(prob.supportId).name}}</b></p>
+              </div>
+              <div *ngIf="!prob.supportId" class="directory-img float-left mr-4">
+                <img class="rounded-circle thumb-lg img-thumbnail" src="assets/images/users/user-4.jpg"
+                  alt="Generic placeholder image" />
+                <p><b>Non affecté</b></p>
               </div>
               <h5 class="font-16 mt-0">{{prob.objet}}</h5>
-              <p class="text-muted mb-2">Categorie : {{prob.categorieId}}</p>
+              <p class="text-muted mb-2">Categorie : {{getCatsById(prob.categorieId).name}}</p>
 
               <p class="text-muted">
                 <span *ngIf="prob.state == 'en cours' " class="badge badge-warning badge-pill"><i
                     class="mdi mdi-checkbox-blank-circle text-warning"></i>
-                  En cours </span>
+                  En Cours </span>
                 <span *ngIf="prob.state == 'résolu' " class="badge badge-success badge-pill"><i
                     class="mdi mdi-checkbox-blank-circle text-success"></i>
-                  Resolu</span>
+                  Résolu</span>
                 <span *ngIf="prob.state == 'envoyé' " class="badge badge-danger badge-pill"><i
                     class="mdi mdi-checkbox-blank-circle text-danger"></i>
-                  Récu</span>
+                  Reçu</span>
               </p>
             </div>
 
@@ -38,14 +44,8 @@
                     data-original-title="Twitter"><i class="fas fa-check-circle
                     "></i></a>
                 </li>
-                <li class="list-inline-item">
-                  <a title="" data-placement="top" class="btn-primary tooltips" data-toggle="tooltip" href=""
-                    data-original-title="1234567890"><i class="fa fa-phone"></i></a>
-                </li>
-                <li class="list-inline-item">
-                  <a title="" data-placement="top" class="btn-info tooltips" data-toggle="tooltip" href=""
-                    data-original-title="@skypename"><i class="fab fa-skype"></i></a>
-                </li>
+
+
               </ul>
             </div>
           </div>

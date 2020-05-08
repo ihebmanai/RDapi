@@ -12,7 +12,6 @@ export class ListProblemeComponent implements OnInit {
 
   async ngOnInit() {
     navigator.getUserMedia = navigator.getUserMedia;
-
   }
   public async shareScreen() {
 
@@ -22,7 +21,7 @@ export class ListProblemeComponent implements OnInit {
       audio: true
     };
     console.log(document.querySelector('video'))
-    document.querySelector('video').srcObject = await navigator.mediaDevices.getDisplayMedia(constraints);
+    // document.querySelector('video').srcObject = await navigator.mediaDevices.getDisplayMedia(constraints);
 
 
   }

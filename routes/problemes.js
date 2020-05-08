@@ -6,6 +6,10 @@ const { DataTypes } = require("sequelize");
 const Probleme = require("../database/models/probleme")(sequelize, DataTypes);
 const Categorie = require("../database/models/categorie")(sequelize, DataTypes);
 const Notifications = require("../database/models/notification")(sequelize, DataTypes);
+const Discussion = require("../database/models/discussion")(sequelize, DataTypes);
+const Message = require("../database/models/message")(sequelize, DataTypes);
+
+
 
 const jwt = require("jsonwebtoken");
 const jwte = require("express-jwt");
@@ -85,7 +89,21 @@ router.get("/affect/:id", auth, (req, res, next) => {
             sender: req.payload.id,
             probleme: req.params.id,
             reciver: probleme.userId
+          });
+          Discussion.create({
+            supportId: probleme.supportId,
+            clientId: probleme.userId,
+            problemeId: probleme.id,
+            state: "unseen"
+          }).then(dis => {
+            Message.create({
+              contenu: 'Bonjour , Je serai votre Support N1 pour votre probléme . ',
+              receiver: probleme.userId,
+              sender: probleme.supportId,
+              discussionId: dis.id
+            })
           })
+
           res.status(200).json(probleme.get());
         });
       else {

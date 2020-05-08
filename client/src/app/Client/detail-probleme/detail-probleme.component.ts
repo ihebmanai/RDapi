@@ -7,9 +7,7 @@ import { MatDialog, MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dial
 import * as socket from 'socket.io-client';
 import { Observable } from 'rxjs';
 import { CallService } from 'src/app/services/call.service';
-import { THIS_EXPR } from '@angular/compiler/src/output/output_ast';
-
-
+import { CategorieService } from 'src/app/services/categorie.service';
 @Component({
   selector: 'app-detail-probleme',
   templateUrl: './detail-probleme.component.html',
@@ -22,35 +20,29 @@ export class DetailProblemeComponent implements OnInit {
   comment = { contenu: '' };
   id: any;
   ioConnection: any;
-  peerConnections = {};
-  config = {
-    iceServers: [
-      {
-        urls: ["stun:stun.l.google.com:19302"]
-      }
-    ]
-  };
   socket: any;
-  stream: any;
-
-  peerConnection = new RTCPeerConnection();
-
-
+  stream: MediaStream;
+  users: any
+  categorie: any;
 
   constructor(private route: ActivatedRoute, private problemeService: ProblemeService, private userservice: UserService,
-    private commentservice: CommentService, public dialog: MatDialog, private callService: CallService
+    private commentservice: CommentService, public dialog: MatDialog, private callService: CallService, private userService: UserService
+    , private categorieService: CategorieService
   ) { this.socket = socket('http://localhost:3000') }
 
   ngOnInit() {
     /* Socket IO connection */
     this.initIoConnection();
     //Navigator Media Stream
-    navigator.getUserMedia = navigator.getUserMedia;
+
 
     this.id = this.route.snapshot.paramMap.get('id');
     this.problemeService.getById(this.id).subscribe((data) => {
       this.probleme = data
       this.user = this.userservice.getUserDetails()
+    })
+    this.userService.getAllUsers().subscribe((data: any) => {
+      this.users = data;
     })
     //comments by Probleme 
     this.commentservice.getAll(this.id).subscribe((data: any) => {
@@ -64,42 +56,6 @@ export class DetailProblemeComponent implements OnInit {
 
     // initilize socker.io 
     this.callService.initSocket();
-    this.callService.answer().subscribe((data) => {
-      this.peerConnections[data.id].setRemoteDescription(data.description);
-
-    });
-
-    this.callService.watcher().subscribe((id) => {
-      console.log('watcher')
-      const peerConnection = new RTCPeerConnection(this.config);
-      this.peerConnections[id] = peerConnection;
-
-
-      this.stream.getTracks().forEach(track => peerConnection.addTrack(track, this.stream));
-
-      this.peerConnection.onicecandidate = event => {
-        if (event.candidate) {
-          this.socket.emit("candidate", id, event.candidate);
-        }
-      };
-
-      this.peerConnection
-        .createOffer()
-        .then(sdp => this.peerConnection.setLocalDescription(sdp))
-        .then(() => {
-          this.socket.emit("offer", id, this.peerConnection.localDescription);
-        });
-
-    })
-    this.callService.candidate().subscribe((data) => {
-      this.peerConnections[data.id].addIceCandidate(new RTCIceCandidate(data.candidate));
-
-    })
-    this.socket.on("disconnectPeer", id => {
-      this.peerConnections[id].close();
-      delete this.peerConnections[id];
-    });
-
     //when we are receving a call
     this.callService.onCall()
       .subscribe(async (call) => {
@@ -114,8 +70,20 @@ export class DetailProblemeComponent implements OnInit {
           ring.play();
 
           dialogRef.afterClosed().subscribe(async result => {
-            ring.pause();
-            this.getStream();
+            if (result) {
+              ring.pause();
+              /*       const constraints = {
+                       video: true,
+                       audio: true
+                     };
+                     navigator.mediaDevices.getDisplayMedia(constraints).then((stream) => this.peer1.addStream(stream)).catch((err) => { console.error(err) });*/
+              window.open('http://localhost:3000/broadcast.html', '_blank');
+              this.callService.screenShare(this.probleme.id, 'answer');
+            }
+            else {
+              ring.pause();
+              this.callService.cancel(this.probleme.id)
+            }
             console.log(`Dialog result: ${result}`);
           });
         }
@@ -131,24 +99,13 @@ export class DetailProblemeComponent implements OnInit {
     )
   }
   public addComment() {
-    console.log(this.comment)
     this.commentservice.add(this.comment, this.id).subscribe((comm) => {
       this.comments.push(comm);
       this.comment.contenu = '';
     })
   }
-  getStream() {
-    const constraints = {
-      video: true,
-      audio: true
-    };
-    return navigator.mediaDevices.getDisplayMedia(constraints).then((stream) => this.gotStream(stream)).catch((err) => { console.error(err) });
-  }
-
-  gotStream(stream) {
-    this.stream = stream;
-    console.log(this.stream)
-    this.socket.emit("broadcaster");
+  public getUserById(id) {
+    return this.users.find(u => u.id == id)
   }
 
 

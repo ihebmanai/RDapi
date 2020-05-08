@@ -4,7 +4,7 @@
 
         <div class="card">
             <div class="card-body">
-                <h4 class="mt-0 header-title mb-4">Liste des Reclamations : {{listPobleme.length}} </h4>
+                <h4 class="mt-0 header-title mb-4">Liste des réclamations : {{listPobleme.length}} </h4>
                 <fieldset>
                     <div style="margin-left: 5%;" class="form-check-inline">
                         <span class="ion-search"></span> |
@@ -15,6 +15,7 @@
                             <option *ngFor="let cat of listCategorie" value="{{cat.id}}">{{cat.name}}</option>
                         </select>
                     </div>
+                    <hr>
                     <div style="margin-left: 5%;margin-bottom:0.5cm;">
 
                         <div class="form-check form-check-inline">
@@ -54,11 +55,11 @@
                     <table class="table table-hover mb-0">
                         <thead>
                             <tr>
-                                <th scope="col">(#) Id</th>
+                                <th scope="col">Actif </th>
                                 <th scope="col">Client</th>
                                 <th scope="col">Objet</th>
                                 <th scope="col">Catégorie</th>
-                                <th scope="col">Date/Time</th>
+                                <th scope="col">Date </th>
                                 <th scope="col">Support</th>
                                 <th scope="col" colspan="2">Status</th>
                             </tr>
@@ -69,16 +70,21 @@
                                 Aucune résultat trouvé 🍔
                             </tr>
                             <tr *ngFor="let prob of listPobleme">
-                                <th scope="row">#14562</th>
+                                <th><span *ngIf="isOnline(prob.userId)" class="badge badge-success badge-pill"><i
+                                            class="mdi mdi-checkbox-blank-circle text-success"></i>
+                                        Actif </span>
+                                    <span *ngIf="!isOnline(prob.userId)" class="badge badge-light badge-pill"><i
+                                            class="mdi mdi-checkbox-blank-circle text-light"></i>
+                                        Inactif </span></th>
                                 <td>
                                     <div>
-                                        <img src="assets/images/users/user-4.jpg" alt=""
-                                            class="thumb-md rounded-circle mr-2"> {{prob.userId}}
+                                        <img src="http://localhost:3000/{{ getUserById(prob.userId).image }}" alt=""
+                                            class="thumb-md rounded-circle mr-2"><b>{{getUserById(prob.userId).name }}</b>
                                     </div>
                                 </td>
                                 <td>{{prob.objet}}
                                 </td>
-                                <td>{{prob.categorieId}}</td>
+                                <td>{{ getCategorieById(prob.categorieId).name}}</td>
                                 <td>{{prob.createdAt | date :'mediumDate'}}
                                     <p class="font-13 text-muted mb-0">{{prob.createdAt | date :'shortTime'}}</p>
 
@@ -90,8 +96,9 @@
                                                 class="thumb-md rounded-circle mr-2"> Pas affecté
                                         </div>
                                         <div *ngIf="prob.supportId">
-                                            <img src="assets/images/users/user-4.jpg" alt=""
-                                                class="thumb-md rounded-circle mr-2"> {{prob.supportId}}
+                                            <img src="http://localhost:3000/{{ getUserById(prob.supportId).image }}"
+                                                alt="" class="thumb-md rounded-circle mr-2">
+                                            <b>{{getUserById(prob.supportId).name }}</b>
                                         </div>
                                     </div>
                                 </td>
@@ -102,7 +109,7 @@
                                             {{prob.state}}</span>
                                         <span *ngIf="prob.state == 'envoyé'" class="badge badge-danger badge-pill"><i
                                                 class="mdi mdi-checkbox-blank-circle text-success"></i>
-                                            Réçu</span>
+                                            Reçu </span>
                                         <span *ngIf="prob.state == 'résolu'" class="badge badge-success badge-pill"><i
                                                 class="mdi mdi-checkbox-blank-circle text-success"></i>
                                             {{prob.state}}</span>

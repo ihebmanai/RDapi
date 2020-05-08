@@ -8,8 +8,7 @@ const SERVER_URL = 'http://localhost:3000';
   providedIn: 'root'
 })
 export class CallService {
-  private socket;
-
+  private socket
   constructor() { }
 
   public initSocket(): void {
@@ -42,12 +41,12 @@ export class CallService {
     });
   }
 
-  public cancelClient(callId): void {
-    this.socket.emit('cancelClient', callId);
+  public cancel(callId): void {
+    this.socket.emit('cancel', callId);
   }
-  public cancel(callId): Observable<any> {
+  public cancelClient(): Observable<any> {
     return new Observable<any>(observer => {
-      this.socket.on('cancel', (data: any) => observer.next(data));
+      this.socket.on('cancelClient', (data: any) => observer.next(data));
     });
   }
   public answer(): Observable<any> {
@@ -55,31 +54,9 @@ export class CallService {
       this.socket.on("answer", (data) => observer.next(data));
     });
   }
-  public watcher(): Observable<any> {
-    return new Observable<any>(observer => {
-      this.socket.on("watcher", (id) => observer.next(id));
-    });
-  }
-  public offer(): Observable<any> {
-    return new Observable<any>(observer => {
-      this.socket.on("offer", (data) => observer.next(data));
-    });
-  }
-  public candidate(): Observable<any> {
-    return new Observable<any>(observer => {
-      this.socket.on("candidate", (data) => observer.next(data));
-    });
-  }
-  public connect(): Observable<any> {
-    return new Observable<any>(observer => {
-      this.socket.on("connect", () => observer.next());
-    });
-  }
-  public broadcaster(): Observable<any> {
-    return new Observable<any>(observer => {
-      this.socket.on("broadcaster", () => observer.next());
-    });
-  }
+
+
+
 
 
 

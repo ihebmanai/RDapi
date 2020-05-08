@@ -14,6 +14,9 @@ import { DetailProblemeComponent } from './Client/detail-probleme/detail-problem
 import { ReclamationsComponent } from './Support/reclamations/reclamations.component';
 import { DetailProblemeSupportComponent } from './Support/detail-probleme-support/detail-probleme-support.component';
 import { ListProblemeComponent } from './Support/list-probleme/list-probleme.component';
+import { ChatComponent } from './Support/chat/chat.component';
+import { ChatClientComponent } from './Client/chat/chat.component';
+
 
 const routes: Routes = [
   { path: "", component: LoginComponent },
@@ -59,6 +62,14 @@ const routes: Routes = [
     path: "reclamer",
     component: ReclamerProblemeComponent,
     canActivate: [AuthGuardService]
+  },
+  {
+    path: "admin/chat",
+    component: ChatComponent,
+  },
+  {
+    path: "chat",
+    component: ChatClientComponent,
   },
   { path: "support/:token", component: ProblemeComponent },
 

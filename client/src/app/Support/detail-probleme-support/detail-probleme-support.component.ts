@@ -6,7 +6,7 @@ import { CommentService } from 'src/app/services/comment.service';
 import { MatDialog, MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
 import * as socket from 'socket.io-client';
 import { CallService } from 'src/app/services/call.service';
-
+import { CategorieService } from 'src/app/services/categorie.service';
 export interface DialogData {
   animal: string;
   name: string;
@@ -25,21 +25,11 @@ export class DetailProblemeSupportComponent implements OnInit {
   private affected = false;
   private comment = { contenu: '' };
   ioConnection: any;
-  configuration = { 'iceServers': [{ 'urls': 'stun:stun.l.google.com:19302' }] }
-  peerConnection = new RTCPeerConnection();
   dialogRef: any;
-  peerConnections = {};
-  config = {
-    iceServers: [
-      {
-        urls: ["stun:stun.l.google.com:19302"]
-      }
-    ]
-  };
   socket: any;
-  stream: any;
-
-
+  stream: MediaStream;
+  users: any;
+  categorie: any
 
 
   constructor(private problemeservice: ProblemeService,
@@ -48,6 +38,8 @@ export class DetailProblemeSupportComponent implements OnInit {
     private commentservice: CommentService,
     private callService: CallService,
     public dialog: MatDialog,
+    private userService: UserService,
+    private categorieService: CategorieService
 
   ) {
 
@@ -57,40 +49,6 @@ export class DetailProblemeSupportComponent implements OnInit {
   ngOnInit() {
     /* Socket IO connection */
     this.initIoConnection();
-    this.callService.offer().subscribe((data) => {
-      this.peerConnection = new RTCPeerConnection(this.config);
-      this.peerConnection
-        .setRemoteDescription(data.description)
-        .then(() => this.peerConnection.createAnswer())
-        .then(sdp => this.peerConnection.setLocalDescription(sdp))
-        .then(() => {
-          this.socket.emit("answer", data.id, this.peerConnection.localDescription);
-        });
-      this.peerConnection.ontrack = event => {
-        console.log(event.streams[0]);
-      };
-      this.peerConnection.onicecandidate = event => {
-        if (event.candidate) {
-          this.socket.emit("candidate", data.id, event.candidate);
-        }
-      };
-
-    })
-
-    this.callService.candidate().subscribe((data) => {
-      this.peerConnection
-        .addIceCandidate(new RTCIceCandidate(data.candidate))
-        .catch(e => console.error(e));
-
-    })
-    this.callService.connect().subscribe(() => {
-      this.socket.emit("watcher");
-
-    })
-    this.callService.broadcaster().subscribe(() => {
-      this.socket.emit("watcher");
-
-    })
 
     //get id probleme 
     this.id = this.route.snapshot.paramMap.get('id');
@@ -105,27 +63,34 @@ export class DetailProblemeSupportComponent implements OnInit {
       this.comments = data;
 
     })
+    this.userService.getAllUsers().subscribe((data: any) => {
+      this.users = data;
+    })
 
   }
 
   //inialize Socker.Io connection 
   private async  initIoConnection() {
     this.callService.initSocket();
+    this.callService.cancelClient().subscribe((data) => {
+      this.dialogRef.close();
+      this.dialog.open(DialogCancel);
 
+    });
+    this.callService.screenShareAnswzer().subscribe((data) => {
+      if (data.callId == this.probleme.id) {
+        this.dialogRef.close();
 
-
+        window.open('http://localhost:3000/index.html', '_blank');
+      }
+    })
   }
 
 
   async  controleRequest() {
-
     this.callService.call(this.probleme.id, 'offer');
-
+    this.dialogRef = this.dialog.open(DialogOverviewExampleDialog);
   }
-
-
-
-
 
   /**
   * affectProbToSupport
@@ -159,6 +124,11 @@ export class DetailProblemeSupportComponent implements OnInit {
 
   }
 
+  public getUserById(id) {
+    return this.users.find(u => u.id == id)
+  }
+
+
 }
 
 @Component({
@@ -168,4 +138,12 @@ export class DetailProblemeSupportComponent implements OnInit {
 export class DialogOverviewExampleDialog {
 
 }
+@Component({
+  selector: 'dialog-cancel',
+  templateUrl: 'diag-cancel.html',
+})
+export class DialogCancel {
+
+}
+
 

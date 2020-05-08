@@ -20,6 +20,7 @@ const problemeRouter = require("./routes/problemes");
 const categorieRouter = require("./routes/categories");
 const commentaireRouter = require("./routes/commentaire");
 const notificationRouter = require("./routes/notifications");
+const discussionRouter = require("./routes/discussion");
 
 
 
@@ -39,14 +40,17 @@ app.use(express.urlencoded({ extended: false }));
 app.use(cookieParser());
 app.use(express.static(path.join(__dirname, "public")));
 app.use(passport.initialize())
+app.use(express.static(__dirname + "/public"));
 
 //routes
-app.use("/", indexRouter);
+app.use("/dis", indexRouter);
 app.use("/users", usersRouter);
 app.use("/problemes", problemeRouter);
 app.use("/categories", categorieRouter);
 app.use("/comment", commentaireRouter);
 app.use("/notification", notificationRouter);
+app.use("/discussion", discussionRouter);
+
 //uploads folder
 app.use('/uploads', express.static('uploads'))
 // catch 404 and forward to error handler

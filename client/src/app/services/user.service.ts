@@ -67,4 +67,11 @@ export class UserService {
   public saveClient(client: { name: string }) {
     return this.http.post(this.url + "/users/saveclient", client);
   }
+  /**
+   * getAllUsers
+   */
+  public getAllUsers(): Observable<any> {
+    return this.http.get(this.url + "/users/getAll", this.autorization);
+
+  }
 }
