@@ -44,11 +44,12 @@ export class ReclamationsComponent implements OnInit {
     this.categorieService.getAll().subscribe((data: any) => {
       this.listCategorie = data;
     });
+    this.serviceChat.getUsers()
 
     this.serviceChat.onlineUsers().subscribe((data) => {
       this.online = data
     })
-    this.serviceChat.connected(this.user.id)
+
 
   }
   /**

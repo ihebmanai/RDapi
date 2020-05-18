@@ -7,6 +7,7 @@ import { MatDialog, MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dial
 import * as socket from 'socket.io-client';
 import { CallService } from 'src/app/services/call.service';
 import { CategorieService } from 'src/app/services/categorie.service';
+import { ChatService } from 'src/app/services/chat.service';
 export interface DialogData {
   animal: string;
   name: string;
@@ -30,6 +31,7 @@ export class DetailProblemeSupportComponent implements OnInit {
   stream: MediaStream;
   users: any;
   categorie: any
+  online = []
 
 
   constructor(private problemeservice: ProblemeService,
@@ -39,7 +41,8 @@ export class DetailProblemeSupportComponent implements OnInit {
     private callService: CallService,
     public dialog: MatDialog,
     private userService: UserService,
-    private categorieService: CategorieService
+    private categorieService: CategorieService,
+    private serviceChat: ChatService
 
   ) {
 
@@ -66,14 +69,19 @@ export class DetailProblemeSupportComponent implements OnInit {
     this.userService.getAllUsers().subscribe((data: any) => {
       this.users = data;
     })
+    this.serviceChat.getUsers()
 
+    this.serviceChat.onlineUsers().subscribe((data) => {
+      this.online = data
+    })
   }
 
   //inialize Socker.Io connection 
   private async  initIoConnection() {
     this.callService.initSocket();
     this.callService.cancelClient().subscribe((data) => {
-      this.dialogRef.close();
+      if (data == this.probleme.userId)
+        this.dialogRef.close();
       this.dialog.open(DialogCancel);
 
     });
@@ -129,6 +137,9 @@ export class DetailProblemeSupportComponent implements OnInit {
   }
 
 
+  public isOnline(id) {
+    return this.online.find(u => u.id == id)
+  }
 }
 
 @Component({

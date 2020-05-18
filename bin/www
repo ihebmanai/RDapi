@@ -35,6 +35,9 @@ io.on('connection', (socket) => {
   socket.on('new-user', (data) => {
     users.push({ id: data, socket: socket.id });
     socket.emit('online-users', users)
+  });
+  socket.on('get-users', () => {
+    socket.emit('online-users', users);
   })
   socket.on('send-message', (data) => {
     socket.broadcast.emit('recive-message', data);
@@ -62,15 +65,12 @@ io.on('connection', (socket) => {
   // makeing call 
   socket.on('call', (data) => {
     console.log('recived call from ' + data.offre);
-    socket.broadcast.emit('calling', { offer: data.offre, callId: data.callId })
+    socket.broadcast.emit('calling', data)
   })
   // answering the call 
   socket.on("make-answer", data => {
     console.log('ok')
-    socket.broadcast.emit("answer-made", {
-      callId: data.callId,
-      answer: data.answer
-    });
+    socket.broadcast.emit("answer-made", data);
   });
 
   socket.on('cancel', (callId) => {
@@ -101,9 +101,16 @@ io.on('connection', (socket) => {
     socket.to(broadcaster).emit("disconnectPeer", socket.id);
   });
 
-  // chat service 
+  // Voice Call Request 
+  socket.on('voice-call', (data) => {
+    console.log(data)
+    socket.broadcast.emit('voice-calling', data)
+  });
 
-})
+  socket.on('accept-voice-call', data => {
+    socket.broadcast.emit('voice-call-accepted', data);
+  })
+});
 
 
 /**

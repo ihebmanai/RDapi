@@ -64,11 +64,11 @@ const routes: Routes = [
     canActivate: [AuthGuardService]
   },
   {
-    path: "admin/chat",
+    path: "admin/chat/:disscussion",
     component: ChatComponent,
   },
   {
-    path: "chat",
+    path: "chat/:disscussion",
     component: ChatClientComponent,
   },
   { path: "support/:token", component: ProblemeComponent },

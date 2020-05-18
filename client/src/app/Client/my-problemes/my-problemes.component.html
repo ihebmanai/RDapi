@@ -16,6 +16,7 @@
                   alt="Generic placeholder image" />
                 <p><b>Non affecté</b></p>
               </div>
+
               <h5 class="font-16 mt-0">{{prob.objet}}</h5>
               <p class="text-muted mb-2">Categorie : {{getCatsById(prob.categorieId).name}}</p>
 
@@ -40,8 +41,8 @@
                       class="fab fa-rocketchat"></i></a>
                 </li>
                 <li class="list-inline-item">
-                  <a title="" data-placement="top" class="btn-info tooltips" data-toggle="tooltip" href=""
-                    data-original-title="Twitter"><i class="fas fa-check-circle
+                  <a title="" data-placement="top" class="btn-info tooltips" data-toggle="tooltip"
+                    routerLink="/chat/{{prob.id}}" data-original-title="Twitter"><i class="fas fa-check-circle
                     "></i></a>
                 </li>
 

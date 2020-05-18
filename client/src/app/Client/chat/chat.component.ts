@@ -3,6 +3,11 @@ import { ProblemeService } from 'src/app/services/probleme.service';
 import { ChatService } from 'src/app/services/chat.service';
 import { UserService } from 'src/app/services/user.service';
 import { Observable } from 'rxjs';
+import { ActivatedRoute } from '@angular/router';
+import { async } from '@angular/core/testing';
+import { CallService } from 'src/app/services/call.service';
+import { MatDialog } from '@angular/material/dialog';
+import { AnimateTimings } from '@angular/animations';
 
 @Component({
   selector: 'app-chat-client',
@@ -18,9 +23,14 @@ export class ChatClientComponent implements OnInit {
   discussion: any;
   online = []
   discussions = [];
-  constructor(private serviceProbleme: ProblemeService, private serviceChat: ChatService, private userService: UserService) { }
+  discussionId: any;
+  SupportCallId: any;
+
+  constructor(private serviceProbleme: ProblemeService, private serviceChat: ChatService, private userService: UserService,
+    private route: ActivatedRoute, private callService: CallService, public dialog: MatDialog) { }
 
   async ngOnInit() {
+    this.discussionId = this.route.snapshot.paramMap.get('disscussion');
     this.initIoConnection()
     this.user = await this.userService.getUserDetails();
     this.serviceProbleme.getAll().subscribe((data: any) => {
@@ -28,14 +38,18 @@ export class ChatClientComponent implements OnInit {
       this.serviceChat.connected(this.user.id)
 
     });
-    this.serviceChat.getDiscussionClient().subscribe((diss: any) => {
-      this.discussions = diss;
+    this.serviceChat.getDiscussionClient().subscribe(async (diss: any) => {
+      this.discussions = await diss;
+      this.discussion = await this.discussions.find(d => d.problemeId == this.discussionId)
+      if (this.discussionId != 'discussions')
+        this.serviceChat.getMessages(this.discussion.id).subscribe(async (data: any) => {
+          this.messages = await data;
+        })
+
     })
     this.userService.getAllUsers().subscribe((data) => {
       this.users = data;
     })
-
-
   }
   /**
    * getUserById
@@ -50,12 +64,13 @@ export class ChatClientComponent implements OnInit {
 
   private initIoConnection(): void {
     this.serviceChat.initSocket();
+    this.callService.initSocket();
     const msgNotif = new Audio();
     msgNotif.src = '../../../assets/sound/msg_sound.wav';
     msgNotif.load();
     this.serviceChat.reciveMessage().subscribe(msg => {
       this.serviceChat.unseen(msg.discussionId).subscribe((data: any) => {
-        this.discussions = data
+        this.discussions = data.filter(d => d.clientId == this.user.id)
       })
       msgNotif.play();
 
@@ -65,7 +80,69 @@ export class ChatClientComponent implements OnInit {
     })
     this.serviceChat.onlineUsers().subscribe((data) => {
       this.online = data
+    });
+
+    this.callService.voiceIsCalling().subscribe((data) => {
+      console.log("okokoko" + data)
+      if (data.clientId == this.user.id) {
+        const VoiceDiag = this.dialog.open(IsCallingDiag);
+        const ring = new Audio();
+        ring.src = '../../../assets/sound/telephone-ring-04.wav';
+        ring.load();
+        ring.play();
+
+        VoiceDiag.afterClosed().subscribe(async result => {
+          if (result) {
+            ring.pause();
+            /*       const constraints = {
+                     video: true,
+                     audio: true
+                   };
+                   navigator.mediaDevices.getDisplayMedia(constraints).then((stream) => this.peer1.addStream(stream)).catch((err) => { console.error(err) });*/
+            //   window.open('http://localhost:3000/broadcast.html', '_blank');
+            this.callService.acceptVoiceCall(data.clientId, data.supportId);
+          }
+          else {
+            ring.pause();
+            this.callService.cancel(this.user.id)
+          }
+          console.log(`Dialog result: ${result}`);
+        });
+      }
     })
+
+    this.callService.onCall()
+      .subscribe(async (call) => {
+        console.log(call)
+        //if we are calling to solve this issues 
+        if (call.callId == this.user.id) {
+          //seting RTC ansewer 
+          //when we accepte 
+          const dialogRef = this.dialog.open(ClientDemandeDiag);
+          const ring = new Audio();
+          ring.src = '../../../assets/sound/telephone-ring-04.wav';
+          ring.load();
+          ring.play();
+
+          dialogRef.afterClosed().subscribe(async result => {
+            if (result) {
+              ring.pause();
+              /*       const constraints = {
+                       video: true,
+                       audio: true
+                     };
+                     navigator.mediaDevices.getDisplayMedia(constraints).then((stream) => this.peer1.addStream(stream)).catch((err) => { console.error(err) });*/
+              window.open('http://localhost:3000/broadcast.html', '_blank');
+              this.callService.screenShare(call.offre, 'answer');
+            }
+            else {
+              ring.pause();
+              this.callService.cancel(this.user.id)
+            }
+            console.log(`Dialog result: ${result}`);
+          });
+        }
+      });
   }
   /**
    * sendMessage
@@ -95,5 +172,19 @@ export class ChatClientComponent implements OnInit {
     return this.online.find(u => u.id == id)
   }
 
+
+}
+@Component({
+  selector: 'client-demande-diag',
+  templateUrl: 'dialog-overview-example-dialog.html',
+})
+export class ClientDemandeDiag {
+
+}
+@Component({
+  selector: 'iscalling-diag',
+  templateUrl: 'iscalling-request-diag.html',
+})
+export class IsCallingDiag {
 
 }

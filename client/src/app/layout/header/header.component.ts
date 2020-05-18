@@ -27,7 +27,7 @@ export class HeaderComponent implements OnInit {
 
       this.discussion = await data.length
     })
-
+    this.serviceChat.connected(this.userServrice.getUserDetails().id);
   }
 
   public seenNotif(id) {

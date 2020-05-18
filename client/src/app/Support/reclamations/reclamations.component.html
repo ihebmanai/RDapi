@@ -61,7 +61,7 @@
                                 <th scope="col">Catégorie</th>
                                 <th scope="col">Date </th>
                                 <th scope="col">Support</th>
-                                <th scope="col" colspan="2">Status</th>
+                                <th scope="col" colspan="3">Status</th>
                             </tr>
                         </thead>
                         <tbody>
@@ -122,6 +122,14 @@
                                     <div>
                                         <a routerLink="/admin/detail/{{prob.id}}"
                                             class="btn btn-primary btn-sm">Detail</a>
+
+                                    </div>
+                                </td>
+                                <td>
+                                    <div>
+                                        <a routerLink="/admin/chat/{{prob.id}}"
+                                            class="btn btn-danger btn-sm">Messages</a>
+
                                     </div>
                                 </td>
                             </tr>

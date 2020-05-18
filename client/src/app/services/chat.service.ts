@@ -72,10 +72,14 @@ export class ChatService {
 
   public onlineUsers(): Observable<any> {
     return new Observable<any>(observer => {
-      console.log(observer)
       this.socket.on('online-users', (data: any) => observer.next(data));
     });
   }
+
+  public getUsers() {
+    this.socket.emit('get-users');
+  }
+
 
   public seen(id) {
     return this.http.put(this.url + "seen/" + id, this.autorization);

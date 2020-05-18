@@ -27,8 +27,8 @@ import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { MatDialog, MatDialogRef, MatDialogModule } from '@angular/material/dialog';
 import { Overlay } from '@angular/cdk/overlay';
 import { DemoMaterialModule } from './material-module';
-import { ChatComponent } from './Support/chat/chat.component';
-import { ChatClientComponent } from './Client/chat/chat.component';
+import { ChatComponent, DemandeDiag, CancelDiag, voiceCallRequest } from './Support/chat/chat.component';
+import { ChatClientComponent, ClientDemandeDiag, IsCallingDiag } from './Client/chat/chat.component';
 
 
 
@@ -39,8 +39,16 @@ import { ChatClientComponent } from './Client/chat/chat.component';
     RegisterComponent,
     HeaderComponent,
     FooterComponent,
-    HomeComponent, ProfilComponent, NotFoundComponent, ProblemeComponent, MyProblemesComponent, ReclamerProblemeComponent, ReclamationsComponent, HeaderSupportNComponent, CategorieComponent, DetailProblemeComponent, ListProblemeComponent, DetailProblemeSupportComponent
-    , DialogOverviewExampleDialog, DialogRecivedCall, DialogCancel, ChatComponent, ChatClientComponent
+    HomeComponent, ProfilComponent,
+    NotFoundComponent, ProblemeComponent,
+    MyProblemesComponent, ReclamerProblemeComponent,
+    ReclamationsComponent, HeaderSupportNComponent,
+    CategorieComponent, DetailProblemeComponent,
+    ListProblemeComponent, DetailProblemeSupportComponent
+    , DialogOverviewExampleDialog, DialogRecivedCall,
+    DialogCancel, ChatComponent, ChatClientComponent,
+    DemandeDiag, CancelDiag, ClientDemandeDiag, voiceCallRequest,
+    IsCallingDiag
   ],
   imports: [
     BrowserModule,
@@ -62,7 +70,12 @@ import { ChatClientComponent } from './Client/chat/chat.component';
   entryComponents: [
     DialogOverviewExampleDialog,
     DialogRecivedCall,
-    DialogCancel
+    DialogCancel,
+    DemandeDiag,
+    CancelDiag,
+    ClientDemandeDiag,
+    voiceCallRequest,
+    IsCallingDiag
   ],
   bootstrap: [AppComponent]
 })

@@ -30,7 +30,8 @@
                                                 <div class="chat_list" (click)="getDiscussionAction(dis)">
 
                                                     <div class="chat_people ">
-                                                        <div class="chat_img rounded-circle"> <img
+                                                        <div class="chat_img rounded-circle"> <img height="75px"
+                                                                width="75px"
                                                                 src="http://localhost:3000/{{getUserById(dis.clientId).image}}"
                                                                 alt="sunil">
                                                             <span style="align-items: center;"
@@ -49,7 +50,24 @@
                                                                     {{dis.updatedAt |date :'medium'}}</span>
 
                                                             </h5>
-
+                                                            <ul class="social-links list-inline mb-0 p-2">
+                                                                <li class="list-inline-item">
+                                                                    <a title="" data-placement="top"
+                                                                        (click)="voiceCallRequest(dis.clientId)"
+                                                                        class="btn-success tooltips"
+                                                                        data-toggle="tooltip" href="javascript:void(0);"
+                                                                        data-original-title="Appel Vocale"><i
+                                                                            class="fa fa-phone"></i></a>
+                                                                </li>
+                                                                <li class="list-inline-item">
+                                                                    <a title="" data-placement="top"
+                                                                        (click)="controleRequest(dis.clientId)"
+                                                                        class="btn-info tooltips" data-toggle="tooltip"
+                                                                        href="javascript:void(0);"
+                                                                        data-original-title="Demande de partage d'écran"><i
+                                                                            class="fas fa-laptop"></i></a>
+                                                                </li>
+                                                            </ul>
                                                             <p><b>Probleme :
                                                                     {{getProbById(dis.problemeId).objet}}</b>
                                                                 .</p>
@@ -60,6 +78,7 @@
                                         </div>
                                     </div>
                                     <div class="mesgs">
+
                                         <div class="msg_history">
                                             <div *ngFor="let msg of messages ">
                                                 <div *ngIf="user.id == msg.receiver" class="incoming_msg">
@@ -86,7 +105,7 @@
 
                                             </div>
                                         </div>
-                                        <div class="type_msg">
+                                        <div *ngIf="discussion?.id" class="type_msg">
                                             <div class="input_msg_write">
                                                 <form (submit)="sendMessage()">
                                                     <input type="text" name="message" class="write_msg"

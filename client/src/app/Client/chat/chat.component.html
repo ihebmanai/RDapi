@@ -85,13 +85,19 @@
                                         </div>
                                         <div class="type_msg">
                                             <div class="input_msg_write">
-                                                <form (submit)="sendMessage()">
+                                                <form *ngIf="discussion?.id " (submit)="sendMessage()">
                                                     <input type="text" name="message" class="write_msg"
                                                         placeholder="Ecrire votre message" [(ngModel)]="message" />
                                                     <button (click)="sendMessage()" class="msg_send_btn"
                                                         type="button"><i class="ion-android-send"
                                                             aria-hidden="true"></i></button>
                                                 </form>
+                                                <div *ngIf="getProbById(discussion?.id)?.state=='résolu'"
+                                                    style="align-items: center;" class="alert alert-success"
+                                                    role="alert">
+                                                    Vous avez marquée cette probléme comme résolu le :<strong>
+                                                        {{getProbById(discussion?.id).updatedAt | date:'mediumDate'}}</strong>
+                                                </div>
                                             </div>
                                         </div>
 
