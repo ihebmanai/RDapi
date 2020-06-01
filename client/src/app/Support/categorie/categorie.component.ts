@@ -8,16 +8,16 @@ import { CategorieService } from 'src/app/services/categorie.service';
 })
 export class CategorieComponent implements OnInit {
   categories: any[];
-  categorie: string = ''
+  categorie = '';
   estAjoutee = false;
   estSupprimee = false;
-  nameSupprimee = ''
+  nameSupprimee = '';
   constructor(private categorieService: CategorieService) { }
 
   ngOnInit() {
     this.categorieService.getAll().subscribe((data: any) => {
       this.categories = data;
-    })
+    });
   }
   add() {
     this.categorieService.add({ categorie: this.categorie }).subscribe((categ) => {
@@ -25,14 +25,14 @@ export class CategorieComponent implements OnInit {
       this.categories.push(categ);
 
     }
-    )
+    );
   }
   delete(id: number, index: number, name: string) {
     this.categorieService.delete(id).subscribe(() => {
       this.nameSupprimee = name;
       this.estSupprimee = true;
       this.categories.splice(index, 1);
-    })
+    });
   }
 
 }

@@ -1,9 +1,78 @@
-   
 <app-header-support-n>
 </app-header-support-n>
 <div class="page-content-wrapper">
   <div class="container-fluid">
-</div>
+    <div class="row">
+      <div class="col-xl-3 col-md-6">
+        <div class="card bg-success mini-stat position-relative">
+          <div class="card-body">
+            <div class="mini-stat-desc">
+              <h6 class="text-uppercase verti-label text-white-50">Resolu</h6>
+              <div class="text-white">
+                <h6 class="text-uppercase mt-0 text-white-50">Resolu</h6>
+                <h3 class="mb-3 mt-0">{{getProblemeByState('résolu')}}</h3>
+
+              </div>
+              <div class="mini-stat-icon">
+                <i class="mdi mdi-briefcase-check display-2"></i>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="col-xl-3 col-md-6">
+        <div class="card bg-warning mini-stat position-relative">
+          <div class="card-body">
+            <div class="mini-stat-desc">
+              <h6 class="text-uppercase verti-label text-white-50">En cours</h6>
+              <div class="text-white">
+                <h6 class="text-uppercase mt-0 text-white-50">En cours</h6>
+                <h3 class="mb-3 mt-0">{{getProblemeByState('en cours')}}</h3>
+
+              </div>
+              <div class="mini-stat-icon">
+                <i class="mdi mdi-buffer display-2"></i>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="col-xl-3 col-md-6">
+        <div class="card bg-dark mini-stat position-relative">
+          <div class="card-body">
+            <div class="mini-stat-desc">
+              <h6 class="text-uppercase verti-label text-white-50">Non affecté</h6>
+              <div class="text-white">
+                <h6 class="text-uppercase mt-0 text-white-50">Non affecté</h6>
+                <h3 class="mb-3 mt-0">{{getProblemeByState('envoyé')}}</h3>
+
+              </div>
+              <div class="mini-stat-icon">
+                <i class="mdi mdi-tag-text-outline display-2"></i>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="col-xl-3 col-md-6">
+        <div class="card bg-primary mini-stat position-relative">
+          <div class="card-body">
+            <div class="mini-stat-desc">
+              <h6 class="text-uppercase verti-label text-white-50">Fermé</h6>
+              <div class="text-white">
+                <h6 class="text-uppercase mt-0 text-white-50">Fermé</h6>
+                <h3 class="mb-3 mt-0">{{getProblemeByState('fermé')}}</h3>
+
+              </div>
+              <div class="mini-stat-icon">
+                <i class="mdi mdi-briefcase-check display-2"></i>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
 </div>
 
 <app-footer></app-footer>

@@ -53,8 +53,8 @@ export class CallService {
       this.socket.on("answer", (data) => observer.next(data));
     });
   }
-  public voiceCall(clientId, supportId) {
-    this.socket.emit('voice-call', { clientId, supportId })
+  public voiceCall(clientId, supportId, room) {
+    this.socket.emit('voice-call', { clientId, supportId, room })
   }
   public voiceIsCalling(): Observable<any> {
     return new Observable<any>(observer => {

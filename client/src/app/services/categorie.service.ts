@@ -12,13 +12,19 @@ export class CategorieService {
   url = "http://localhost:3000/categories/";
   constructor(private http: HttpClient) { }
   public add(categorie: any) {
-    return this.http.post(this.url, categorie, this.autorization)
+    return this.http.post(this.url, categorie, {
+      headers: { Authorization: `Bearer ${localStorage.getItem("token")}` }
+    })
   }
   public delete(id: number) {
-    return this.http.delete(this.url + id, this.autorization)
+    return this.http.delete(this.url + id, {
+      headers: { Authorization: `Bearer ${localStorage.getItem("token")}` }
+    })
   }
   public getAll() {
-    return this.http.get(this.url, this.autorization)
+    return this.http.get(this.url, {
+      headers: { Authorization: `Bearer ${localStorage.getItem("token")}` }
+    })
   }
 
 }

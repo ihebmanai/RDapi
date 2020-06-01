@@ -21,7 +21,7 @@ export class ChatClientComponent implements OnInit {
   messages = [];
   message: any;
   discussion: any;
-  online = []
+  online = [];
   discussions = [];
   discussionId: any;
   SupportCallId: any;
@@ -30,26 +30,32 @@ export class ChatClientComponent implements OnInit {
     private route: ActivatedRoute, private callService: CallService, public dialog: MatDialog) { }
 
   async ngOnInit() {
+    // get discussion ID 
     this.discussionId = this.route.snapshot.paramMap.get('disscussion');
-    this.initIoConnection()
+    this.initIoConnection();
+    //get connected user
     this.user = await this.userService.getUserDetails();
+    //get problemes (change it)
     this.serviceProbleme.getAll().subscribe((data: any) => {
-      this.problemes = data.filter(prob => prob.userId == this.user.id)
-      this.serviceChat.connected(this.user.id)
+      this.problemes = data.filter(prob => prob.userId == this.user.id);
+      //add user to connected-user list socket 
+      this.serviceChat.connected(this.user.id);
 
     });
+    //get Client Discussion
     this.serviceChat.getDiscussionClient().subscribe(async (diss: any) => {
       this.discussions = await diss;
-      this.discussion = await this.discussions.find(d => d.problemeId == this.discussionId)
-      if (this.discussionId != 'discussions')
+      this.discussion = await this.discussions.find(d => d.problemeId == this.discussionId);
+      if (this.discussionId !== 'discussions') {
         this.serviceChat.getMessages(this.discussion.id).subscribe(async (data: any) => {
           this.messages = await data;
-        })
+        });
+      }
 
-    })
+    });
     this.userService.getAllUsers().subscribe((data) => {
       this.users = data;
-    })
+    });
   }
   /**
    * getUserById
@@ -65,25 +71,29 @@ export class ChatClientComponent implements OnInit {
   private initIoConnection(): void {
     this.serviceChat.initSocket();
     this.callService.initSocket();
+    // sound notification Type:Audio
     const msgNotif = new Audio();
     msgNotif.src = '../../../assets/sound/msg_sound.wav';
     msgNotif.load();
+
+    //on Reciving a message 
     this.serviceChat.reciveMessage().subscribe(msg => {
+      //update the discussion state as unseen
       this.serviceChat.unseen(msg.discussionId).subscribe((data: any) => {
-        this.discussions = data.filter(d => d.clientId == this.user.id)
-      })
+        this.discussions = data.filter(d => d.clientId == this.user.id);
+      });
       msgNotif.play();
 
       if (msg.discussionId == this.discussion.id) {
         this.messages.push(msg);
       }
-    })
-    this.serviceChat.onlineUsers().subscribe((data) => {
-      this.online = data
     });
-
+    // online users 
+    this.serviceChat.onlineUsers().subscribe((data) => {
+      this.online = data;
+    });
+    //Reciiving  voice calling request emited
     this.callService.voiceIsCalling().subscribe((data) => {
-      console.log("okokoko" + data)
       if (data.clientId == this.user.id) {
         const VoiceDiag = this.dialog.open(IsCallingDiag);
         const ring = new Audio();
@@ -94,30 +104,25 @@ export class ChatClientComponent implements OnInit {
         VoiceDiag.afterClosed().subscribe(async result => {
           if (result) {
             ring.pause();
-            /*       const constraints = {
-                     video: true,
-                     audio: true
-                   };
-                   navigator.mediaDevices.getDisplayMedia(constraints).then((stream) => this.peer1.addStream(stream)).catch((err) => { console.error(err) });*/
-            //   window.open('http://localhost:3000/broadcast.html', '_blank');
+            // open the chat room 
+            window.open('http://localhost:3000/voicecall.html#' + data.room, '_blank');
             this.callService.acceptVoiceCall(data.clientId, data.supportId);
-          }
-          else {
+          } else {
             ring.pause();
-            this.callService.cancel(this.user.id)
+            this.callService.cancel(this.user.id);
           }
           console.log(`Dialog result: ${result}`);
         });
       }
-    })
-
+    });
+    // Recieve a screen sharing request 
     this.callService.onCall()
       .subscribe(async (call) => {
-        console.log(call)
-        //if we are calling to solve this issues 
+        console.log(call);
+        // if we are calling to solve this issues
         if (call.callId == this.user.id) {
-          //seting RTC ansewer 
-          //when we accepte 
+          // seting RTC ansewer
+          // when we accepte
           const dialogRef = this.dialog.open(ClientDemandeDiag);
           const ring = new Audio();
           ring.src = '../../../assets/sound/telephone-ring-04.wav';
@@ -125,19 +130,15 @@ export class ChatClientComponent implements OnInit {
           ring.play();
 
           dialogRef.afterClosed().subscribe(async result => {
+            // if accepted
             if (result) {
               ring.pause();
-              /*       const constraints = {
-                       video: true,
-                       audio: true
-                     };
-                     navigator.mediaDevices.getDisplayMedia(constraints).then((stream) => this.peer1.addStream(stream)).catch((err) => { console.error(err) });*/
               window.open('http://localhost:3000/broadcast.html', '_blank');
               this.callService.screenShare(call.offre, 'answer');
-            }
-            else {
+              // if canceled
+            } else {
               ring.pause();
-              this.callService.cancel(this.user.id)
+              this.callService.cancel(this.user.id);
             }
             console.log(`Dialog result: ${result}`);
           });
@@ -148,13 +149,13 @@ export class ChatClientComponent implements OnInit {
    * sendMessage
    */
   public sendMessage() {
-    let msg = { sender: this.user.id, receiver: this.discussion.supportId, contenu: this.message, discussionId: this.discussion.id }
+    const msg = { sender: this.user.id, receiver: this.discussion.supportId, contenu: this.message, discussionId: this.discussion.id };
     this.serviceChat.send(msg).subscribe((data) => {
       this.messages.push(data);
       this.serviceChat.sendMessage(data);
       this.message = '';
 
-    })
+    });
   }
 
   /**
@@ -165,11 +166,11 @@ export class ChatClientComponent implements OnInit {
     this.serviceChat.getMessages(disc.id).subscribe((data: any) => {
       this.messages = data;
 
-    })
+    });
   }
 
   public isOnline(id) {
-    return this.online.find(u => u.id == id)
+    return this.online.find(u => u.id == id);
   }
 
 

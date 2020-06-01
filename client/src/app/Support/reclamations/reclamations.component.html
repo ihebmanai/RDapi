@@ -6,7 +6,7 @@
             <div class="card-body">
                 <h4 class="mt-0 header-title mb-4">Liste des réclamations : {{listPobleme.length}} </h4>
                 <fieldset>
-                    <div style="margin-left: 5%;" class="form-check-inline">
+                    <div style="margin-left: 5%; " class="form-check-inline">
                         <span class="ion-search"></span> |
                         <label class="form-check-label">Catégorie: </label>
                         <select (change)="searchCat()" style="margin-left: 5%;" name="categorie" [(ngModel)]="categorie"
@@ -14,6 +14,9 @@
                             <option value="0" selected>Tous</option>
                             <option *ngFor="let cat of listCategorie" value="{{cat.id}}">{{cat.name}}</option>
                         </select>
+
+
+
                     </div>
                     <hr>
                     <div style="margin-left: 5%;margin-bottom:0.5cm;">
@@ -48,6 +51,17 @@
                                 [(ngModel)]="problemeState" (change)="search()">
                             <label class="form-check-label" for="inlineCheckbox3">Fermé</label>
                         </div>
+                        <div class="form-check form-check-inline">
+                            <span> | </span>
+
+                        </div>
+
+                        <div class="form-check form-check-inline">
+                            <input class="form-check-input" type="checkbox" name="searchChoice" value="fermé"
+                                [(ngModel)]="myprobleme" (change)="myproblemes()">
+                            <label class="form-check-label" for="inlineCheckbox3">Mes Tickets</label>
+                        </div>
+
 
                     </div>
                 </fieldset>
@@ -127,7 +141,7 @@
                                 </td>
                                 <td>
                                     <div>
-                                        <a routerLink="/admin/chat/{{prob.id}}"
+                                        <a *ngIf="prob.supportId== user.id" routerLink="/admin/chat/{{prob.id}}"
                                             class="btn btn-danger btn-sm">Messages</a>
 
                                     </div>

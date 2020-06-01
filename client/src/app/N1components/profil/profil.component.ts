@@ -1,12 +1,12 @@
-import { Component, OnInit } from "@angular/core";
-import { UserService } from "src/app/services/user.service";
-import { user } from "src/app/models/User";
+import { Component, OnInit } from '@angular/core';
+import { UserService } from 'src/app/services/user.service';
+import { user } from 'src/app/models/User';
 import { async } from '@angular/core/testing';
 
 @Component({
-  selector: "app-profil",
-  templateUrl: "./profil.component.html",
-  styleUrls: ["./profil.component.css"]
+  selector: 'app-profil',
+  templateUrl: './profil.component.html',
+  styleUrls: ['./profil.component.css']
 })
 export class ProfilComponent implements OnInit {
   user: user = {};
@@ -28,7 +28,7 @@ export class ProfilComponent implements OnInit {
     });
   }
   update() {
-    let form = new FormData();
+    const form = new FormData();
     form.append('userPhoto', this.image);
     form.append('name', this.user.name);
     form.append('username', this.user.username);
@@ -40,13 +40,14 @@ export class ProfilComponent implements OnInit {
     });
   }
   async preview(files) {
-    if (files.length === 0)
+    if (files.length === 0) {
       return;
+    }
     this.image = files[0];
-    console.log(this.image)
-    let mimeType = files[0].type;
+    console.log(this.image);
+    const mimeType = files[0].type;
     if (mimeType.match(/image\/*/) == null) {
-      this.message = "Only images are supported.";
+      this.message = 'Only images are supported.';
       return;
     }
 
@@ -56,6 +57,6 @@ export class ProfilComponent implements OnInit {
     reader.onload = async (_event) => {
       this.imgURL = await reader.result;
       this.isphotoSelected = true;
-    }
+    };
   }
 }

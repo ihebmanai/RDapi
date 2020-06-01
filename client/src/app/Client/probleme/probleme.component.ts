@@ -25,6 +25,7 @@ export class ProblemeComponent implements OnInit {
   ) { }
 
   ngOnInit() {
+    //get passed token 
     let token = this.route.snapshot.paramMap.get('token');
     let payload = '';
     payload = window.atob(token);
@@ -35,11 +36,13 @@ export class ProblemeComponent implements OnInit {
       .subscribe((token: string) => {
         localStorage.setItem('token', token);
       });
+
     this.categorieService.getAll().subscribe((data: any) => {
       this.listCategorie = data;
     });
   }
   public addProbleme() {
+    console.log(localStorage.getItem('token'))
     let form = new FormData();
     form.append('files', this.files);
     form.append('objet', this.probleme.objet);

@@ -17,9 +17,10 @@ export class ReclamationsComponent implements OnInit {
   public problemeState = '';
   public listCategorie = [];
   public categorie = 0;
+  public myprobleme: any;
   public users: any;
   public user: any
-  online = []
+  online = [];
   constructor(private problemeservice: ProblemeService,
     private categorieService: CategorieService,
     private userService: UserService,
@@ -35,6 +36,7 @@ export class ReclamationsComponent implements OnInit {
       this.problemeStore = data;
     });
 
+    //get loged user
     this.user = await this.userService.getUserDetails()
     this.userService.getAllUsers().subscribe((data: any) => {
       this.users = data;
@@ -44,8 +46,9 @@ export class ReclamationsComponent implements OnInit {
     this.categorieService.getAll().subscribe((data: any) => {
       this.listCategorie = data;
     });
-    this.serviceChat.getUsers()
 
+    this.serviceChat.getUsers();
+    //get Online users to get User state (Actif/Inactif)
     this.serviceChat.onlineUsers().subscribe((data) => {
       this.online = data
     })
@@ -53,10 +56,9 @@ export class ReclamationsComponent implements OnInit {
 
   }
   /**
-   * search
+   * GET probleme by State
    */
   public search() {
-    console.log(this.problemeState)
     if (this.problemeState == 'all') {
       this.listPobleme = this.problemeStore;
     }
@@ -64,13 +66,27 @@ export class ReclamationsComponent implements OnInit {
       this.listPobleme = this.problemeStore.filter((prob) => prob.state == this.problemeState)
     }
   }
+
+  /**
+   * GET problemes by catégorie
+   */
   public searchCat() {
-    console.log(this.categorie);
+
     if (this.categorie == 0) {
       this.listPobleme = this.problemeStore;
     } else {
       this.listPobleme = this.problemeStore.filter((prob) => prob.categorieId == this.categorie)
     }
+
+  }
+  /**
+   * GET my problemes
+   */
+  public myproblemes() {
+    if (this.myprobleme)
+      this.listPobleme = this.problemeStore.filter((prob) => prob.supportId == this.user.id)
+    else
+      this.listPobleme = this.problemeStore;
 
   }
   public getUserById(id) {
@@ -84,8 +100,11 @@ export class ReclamationsComponent implements OnInit {
 
   }
 
-
+  /**
+     * Return user state (Actif/Inactif)
+     */
   public isOnline(id) {
+
     return this.online.find(u => u.id == id)
   }
 

@@ -30,8 +30,8 @@ export class DetailProblemeSupportComponent implements OnInit {
   socket: any;
   stream: MediaStream;
   users: any;
-  categorie: any
-  online = []
+  categorie: any;
+  online = [];
 
 
   constructor(private problemeservice: ProblemeService,
@@ -46,42 +46,43 @@ export class DetailProblemeSupportComponent implements OnInit {
 
   ) {
 
-    this.socket = socket('http://localhost:3000')
+    this.socket = socket('http://localhost:3000');
   }
 
   ngOnInit() {
     /* Socket IO connection */
     this.initIoConnection();
 
-    //get id probleme 
+    // get id probleme
     this.id = this.route.snapshot.paramMap.get('id');
-    //logged User
+    // logged User
     this.user = this.userservice.getUserDetails();
-    //Detail probleme
+    // Detail probleme
     this.problemeservice.getById(this.id).subscribe((probleme) => {
       this.probleme = probleme;
-    })
-    //comments by Probleme 
+    });
+    // comments by Probleme
     this.commentservice.getAll(this.id).subscribe((data: any) => {
       this.comments = data;
 
-    })
+    });
     this.userService.getAllUsers().subscribe((data: any) => {
       this.users = data;
-    })
-    this.serviceChat.getUsers()
+    });
+    this.serviceChat.getUsers();
 
     this.serviceChat.onlineUsers().subscribe((data) => {
-      this.online = data
-    })
+      this.online = data;
+    });
   }
 
-  //inialize Socker.Io connection 
+  // inialize Socker.Io connection
   private async  initIoConnection() {
     this.callService.initSocket();
     this.callService.cancelClient().subscribe((data) => {
-      if (data == this.probleme.userId)
+      if (data == this.probleme.userId) {
         this.dialogRef.close();
+      }
       this.dialog.open(DialogCancel);
 
     });
@@ -91,7 +92,7 @@ export class DetailProblemeSupportComponent implements OnInit {
 
         window.open('http://localhost:3000/index.html', '_blank');
       }
-    })
+    });
   }
 
 
@@ -124,21 +125,21 @@ export class DetailProblemeSupportComponent implements OnInit {
    * addComment
    */
   public addComment() {
-    console.log(this.comment)
+    console.log(this.comment);
     this.commentservice.add(this.comment, this.id).subscribe((comm) => {
       this.comments.push(comm);
       this.comment.contenu = '';
-    })
+    });
 
   }
 
   public getUserById(id) {
-    return this.users.find(u => u.id == id)
+    return this.users.find(u => u.id == id);
   }
 
 
   public isOnline(id) {
-    return this.online.find(u => u.id == id)
+    return this.online.find(u => u.id == id);
   }
 }
 

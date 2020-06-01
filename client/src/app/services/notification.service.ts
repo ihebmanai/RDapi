@@ -15,10 +15,14 @@ export class NotificationService {
    * getAll
    */
   public getAll() {
-    return this.http.get(this.url, this.autorization)
+    return this.http.get(this.url, {
+      headers: { Authorization: `Bearer ${localStorage.getItem("token")}` }
+    })
   }
 
   public seenNotif(id) {
-    return this.http.put(this.url + id, this.autorization)
+    return this.http.put(this.url + id, {
+      headers: { Authorization: `Bearer ${localStorage.getItem("token")}` }
+    })
   }
 }

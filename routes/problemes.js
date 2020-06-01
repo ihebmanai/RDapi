@@ -87,7 +87,7 @@ router.get("/affect/:id", auth, (req, res, next) => {
             type: 'affecte',
             state: 'unseen',
             sender: req.payload.id,
-            probleme: probleme.id,
+            problemeId: probleme.id,
             reciver: probleme.userId
           });
           Discussion.create({

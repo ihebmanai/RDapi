@@ -82,10 +82,14 @@ export class ChatService {
 
 
   public seen(id) {
-    return this.http.put(this.url + "seen/" + id, this.autorization);
+    return this.http.put(this.url + "seen/" + id, {
+      headers: { Authorization: `Bearer ${localStorage.getItem("token")}` }
+    });
   }
 
   public unseen(id) {
-    return this.http.put(this.url + "unseen/" + id, this.autorization);
+    return this.http.put(this.url + "unseen/" + id, {
+      headers: { Authorization: `Bearer ${localStorage.getItem("token")}` }
+    });
   }
 }

@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { UserService } from 'src/app/services/user.service';
 import { Router } from '@angular/router';
-
+import { asyncLocalStorage } from 'src/app/services/utlis'
 @Component({
   selector: 'app-login',
   templateUrl: './login.component.html',
@@ -20,12 +20,15 @@ export class LoginComponent implements OnInit {
   login() {
     this.userService.login(this.user).subscribe(
       async (data: string) => {
-        await localStorage.setItem('token', data);
-        await this.router.navigateByUrl('/home');
+        asyncLocalStorage.setItem('token', data).then(() => {
+          this.router.navigateByUrl('/home');
+
+        })
       },
       (err) => {
         this.err = true;
       }
     );
   }
+
 }

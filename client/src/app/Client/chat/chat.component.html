@@ -92,12 +92,7 @@
                                                         type="button"><i class="ion-android-send"
                                                             aria-hidden="true"></i></button>
                                                 </form>
-                                                <div *ngIf="getProbById(discussion?.id)?.state=='résolu'"
-                                                    style="align-items: center;" class="alert alert-success"
-                                                    role="alert">
-                                                    Vous avez marquée cette probléme comme résolu le :<strong>
-                                                        {{getProbById(discussion?.id).updatedAt | date:'mediumDate'}}</strong>
-                                                </div>
+
                                             </div>
                                         </div>
 

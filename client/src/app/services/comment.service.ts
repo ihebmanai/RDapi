@@ -15,10 +15,14 @@ export class CommentService {
    * add
    */
   public add(comment: any, problemeId: any) {
-    return this.http.post(this.url + problemeId, comment, this.autorization);
+    return this.http.post(this.url + problemeId, comment, {
+      headers: { Authorization: `Bearer ${localStorage.getItem("token")}` }
+    });
   }
   public getAll(problemeId: any) {
-    return this.http.get(this.url + problemeId, this.autorization);
+    return this.http.get(this.url + problemeId, {
+      headers: { Authorization: `Bearer ${localStorage.getItem("token")}` }
+    });
   }
 
 }

@@ -72,11 +72,6 @@ export class DetailProblemeComponent implements OnInit {
           dialogRef.afterClosed().subscribe(async result => {
             if (result) {
               ring.pause();
-              /*       const constraints = {
-                       video: true,
-                       audio: true
-                     };
-                     navigator.mediaDevices.getDisplayMedia(constraints).then((stream) => this.peer1.addStream(stream)).catch((err) => { console.error(err) });*/
               window.open('http://localhost:3000/broadcast.html', '_blank');
               this.callService.screenShare(this.probleme.id, 'answer');
             }
@@ -90,7 +85,7 @@ export class DetailProblemeComponent implements OnInit {
       });
   }
   /**
-   * resolu
+   * update a probleme state to 'resolu'
    */
   public resolu() {
     this.problemeService.problemeResolu(this.probleme.id).subscribe((prob) => {
@@ -98,6 +93,10 @@ export class DetailProblemeComponent implements OnInit {
     }
     )
   }
+
+  /**
+   * add a comment to a poste 
+   */
   public addComment() {
     this.commentservice.add(this.comment, this.id).subscribe((comm) => {
       this.comments.push(comm);
