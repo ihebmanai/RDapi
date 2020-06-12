@@ -20,48 +20,6 @@ export class ChatService {
   public initSocket(): void {
     this.socket = socketIo(SERVER_URL);
   }
-  public sendMessage(data) {
-    this.socket.emit("send-message", data);
-  }
-  public reciveMessage(): Observable<any> {
-    return new Observable<any>(observer => {
-      console.log(observer)
-      this.socket.on('recive-message', (data: any) => observer.next(data));
-    });
-  }
-  /**
-   * send
-   */
-  public send(msg) {
-    return this.http.post(this.url, msg, this.autorization)
-  }
-  /**
-   * getDisscussion
-   */
-  public getDiscussion(id) {
-    return this.http.get(this.url + 'chat/' + id, this.autorization)
-  }
-
-  /**
-   * getMessages
-   */
-  public getMessages(id) {
-    return this.http.get(this.url + "msg/" + id, this.autorization);
-  }
-
-  /**
-   * getDiscussionSupport
-   */
-  public getDiscussionSupport() {
-    return this.http.get(this.url + "support", this.autorization);
-  }
-  /**
-   * getDiscussionSupport
-   */
-  public getDiscussionClient() {
-    return this.http.get(this.url + "client", this.autorization);
-  }
-
 
   /**
    * connected
@@ -78,18 +36,5 @@ export class ChatService {
 
   public getUsers() {
     this.socket.emit('get-users');
-  }
-
-
-  public seen(id) {
-    return this.http.put(this.url + "seen/" + id, {
-      headers: { Authorization: `Bearer ${localStorage.getItem("token")}` }
-    });
-  }
-
-  public unseen(id) {
-    return this.http.put(this.url + "unseen/" + id, {
-      headers: { Authorization: `Bearer ${localStorage.getItem("token")}` }
-    });
   }
 }

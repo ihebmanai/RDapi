@@ -16,101 +16,25 @@
       <div class="menu-extras topbar-custom">
         <ul class="navbar-right d-flex list-inline float-right mb-0">
           <li class="dropdown notification-list d-none d-sm-block">
-            <form role="search" class="app-search">
-              <div class="form-group mb-0">
-                <input type="text" class="form-control" placeholder="Search.." />
-                <button type="submit"><i class="fa fa-search"></i></button>
-              </div>
-            </form>
-          </li>
-
-          <li class="dropdown notification-list">
-            <a class="nav-link dropdown-toggle arrow-none waves-effect waves-light" data-toggle="dropdown" href="#"
-              role="button" aria-haspopup="false" aria-expanded="false">
-              <i class="mdi mdi-bell noti-icon"></i>
-              <span class="badge badge-pill badge-info noti-icon-badge">{{notifications.length}}</span>
-            </a>
-            <div class="dropdown-menu dropdown-menu-right dropdown-menu-lg">
-              <!-- item-->
-              <h6 class="dropdown-item-text">
-                Notifications ({{notifications.length}})
-              </h6>
-              <div class="slimscroll notification-item-list">
-                <!-- item-->
-                <div *ngFor="let notif of notifications">
-                  <a *ngIf="notif.type=='recu'" (click)='seenNotif(notif.id)' href="javascript:void(0)"
-                    class="dropdown-item notify-item active">
-                    <div class="notify-icon bg-success">
-                      <i class="mdi mdi-power"></i>
-                    </div>
-                    <p class="notify-details">
-                      Nouvelle Reclamation<span class="text-muted">{{notif.sender}}
-                        {{notif.contenu}}</span>
-                    </p>
-                  </a>
-                  <a *ngIf="notif.type=='comment'" (click)='seenNotif(notif.id)' href="javascript:void(0)"
-                    class="dropdown-item notify-item active">
-                    <div class="notify-icon bg-warning">
-                      <i class="mdi mdi-message"></i>
-                    </div>
-                    <p class="notify-details">
-                      Commentaire Ajouté<span class="text-muted">{{notif.sender}}
-                        {{notif.contenu}} </span>
-                    </p>
-                  </a>
-                  <a *ngIf="notif.type=='resolu'" (click)='seenNotif(notif.id)' href="javascript:void(0)"
-                    class="dropdown-item notify-item active">
-                    <div class="notify-icon bg-primary">
-                      <i class="ion-ios7-heart
-                      "></i>
-                    </div>
-                    <p class="notify-details">
-                      Probléme marqué comme Résolu<span class="text-muted">{{notif.sender}}
-                        {{notif.contenu}} </span>
-                    </p>
-                  </a>
-                </div>
-
-              </div>
-              <!-- All-->
-              <a href="javascript:void(0);" class="dropdown-item text-center text-primary">
-                View all <i class="fi-arrow-right"></i>
-              </a>
-            </div>
-          </li>
-          <li class="dropdown notification-list">
             <div class="dropdown notification-list">
               <a class="dropdown-toggle nav-link arrow-none waves-effect nav-user waves-light" data-toggle="dropdown"
                 href="#" role="button" aria-haspopup="false" aria-expanded="false">
-                <img width="25px" height="25px" src="http://localhost:3000/{{ image }}" alt="user"
-                  class="rounded-circle" />
+                <img src="assets/images/favicon.jpg" alt="user" class="rounded-circle">
               </a>
               <div class="dropdown-menu dropdown-menu-right profile-dropdown ">
                 <!-- item-->
-                <a class="dropdown-item" routerLink="/profile"><i class="mdi mdi-account-circle m-r-5"></i> Profile</a>
-                <a class="dropdown-item" href="#"><i class="mdi mdi-wallet m-r-5"></i> My Wallet</a>
-                <a class="dropdown-item d-block" href="#"><span class="badge badge-success float-right">11</span><i
-                    class="mdi mdi-settings m-r-5"></i> Settings</a>
-                <a class="dropdown-item" href="#"><i class="mdi mdi-lock-open-outline m-r-5"></i> Lock
-                  screen</a>
-                <div class="dropdown-divider"></div>
-                <a (click)="logout()" class="dropdown-item text-danger" routerLink="/login"><i
-                    class="mdi mdi-power text-danger"></i> Logout</a>
+
+                <a class="dropdown-item text-danger" href="javascript:void(0);" (click)="logout()"><i
+                    class="mdi mdi-power text-danger"></i>
+                  Logout</a>
               </div>
             </div>
           </li>
 
-          <li class="menu-item list-inline-item">
-            <!-- Mobile menu toggle-->
-            <a class="navbar-toggle nav-link">
-              <div class="lines">
-                <span></span>
-                <span></span>
-                <span></span>
-              </div>
-            </a>
-            <!-- End mobile menu toggle-->
-          </li>
+
+
+
+
         </ul>
       </div>
       <!-- end menu-extras -->
@@ -119,30 +43,15 @@
     </div>
     <!-- end container -->
   </div>
-  <!-- end topbar-main -->
 
-  <!-- MENU Start -->
   <div class="navbar-custom">
     <div class="container-fluid">
       <div id="navigation">
         <!-- Navigation Menu-->
         <ul class="navigation-menu">
           <li class="has-submenu">
-            <a routerLink="/categorie"><i class="mdi mdi-home"></i>Catégoires</a>
-
+            <a href="javascript:void(0);"><i class="mdi mdi-home"></i>Support Agena3000</a>
           </li>
-          <li class="has-submenu">
-            <a routerLink="/reclamations"><i class="mdi mdi-home"></i>Liste des Problémes</a>
-
-
-
-          </li>
-          <li class="has-submenu">
-            <a routerLink="/admin/chat/discussion"><i class="mdi mdi-home"></i>Messagerie ({{discussion}})</a>
-
-          </li>
-
-
         </ul>
         <!-- End navigation menu -->
       </div>
@@ -150,6 +59,10 @@
     </div>
     <!-- end container -->
   </div>
+  <!-- end topbar-main -->
+
+  <!-- MENU Start -->
+
   <!-- end navbar-custom -->
 </header>
 <!-- End Navigation Bar-->
@@ -162,7 +75,7 @@
         <div class="col-sm-12">
 
 
-          <h4 class="page-title">Dashboard</h4>
+          <h4 class="page-title">Bienvenue</h4>
           <ol class="breadcrumb">
             <li class="breadcrumb-item active">Agena3000 Support</li>
           </ol>

@@ -21,8 +21,12 @@ export class LoginComponent implements OnInit {
     this.userService.login(this.user).subscribe(
       async (data: string) => {
         asyncLocalStorage.setItem('token', data).then(() => {
-          this.router.navigateByUrl('/home');
+          if (this.userService.getUserDetails().role === "N1")
+            this.router.navigateByUrl('/admin/accueil');
+          else {
+            this.router.navigateByUrl('/accueil');
 
+          }
         })
       },
       (err) => {

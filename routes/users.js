@@ -49,9 +49,9 @@ router.post("/login", async (req, res) => {
       return res.status(404).json("user not found");
     }
     if (user.password == password) {
-      const { id, username } = user.dataValues;
+      const { id, username, role } = user.dataValues;
       //create payload to pass it to the  token
-      const payload = { id, username };
+      const payload = { id, username, role };
       //Sign token
       jwt.sign(
         payload,
